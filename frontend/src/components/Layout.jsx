@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import AuthButton from './AuthButton';
 
 function Layout() {
   return (
     <>
       <header>
-        <Link to="/" style={{'padding-right': '10px'}}>Home</Link>
-        <Link to="/login">Login</Link>
+        <Link to="/" className="home" style={{'paddingRight': '10px'}}>Home</Link>
+        <AuthButton />
       </header>
       <main className='container'><Outlet /></main>
     </>

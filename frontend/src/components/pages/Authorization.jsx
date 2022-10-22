@@ -1,48 +1,88 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
+import { Form, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 import * as yup from 'yup';
+import axios from 'axios';
+import routes from '../../routes';
+
 
 const Login = () => {
+  const [authFailed, setAuthFailed] = useState(false);
+  const navigate = useNavigate();
+  const { logIn } = useAuth();
+
   const formik = useFormik({
     initialValues: {
-      name: '',
-      pass: '',
+      username: '',
+      password: '',
     },
     validationSchema: yup.object({
-      name: yup.string()
+      username: yup.string()
         .required('This field is required'),
-      pass: yup.string()
+      password: yup.string()
         .required('This field is required'),
     }),
-    onSubmit: values => {
-      alert('Submitted!');
+    onSubmit: async (values) => {
+      try {
+        const response = await axios.post(routes.loginPath(), values);
+        localStorage.setItem('userToken', JSON.stringify(response.data.token));
+        logIn()
+        navigate('/', { replace: true });
+      } catch (err) { 
+        formik.setSubmitting(false);
+        if (err.isAxiosError && err.response.status === 401) {
+          setAuthFailed(true);
+          return;
+        }
+        throw err;
+      }
     },
   });
+
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <label htmlFor="name">User name</label>
-      <input
-        id="name"
-        name="name"
-        type="text"
-        onChange={formik.handleChange}
-        value={formik.values.name}
-      />
-      {formik.errors.name ? <div>{formik.errors.name}</div> : null}
-
-      <label htmlFor="pass">Password</label>
-      <input
-        id="pass"
-        name="pass"
-        type="text"
-        onChange={formik.handleChange}
-        value={formik.values.pass}
-      />
-      <br />
-      {formik.errors.pass ? <div>{formik.errors.pass}</div> : null}
-
-      <button type="submit">Submit</button>
-    </form>
+    <div className="container-fluid">
+      <div className="row justify-content-center pt-5">
+        <div className="col-sm-5">
+          <Form onSubmit={formik.handleSubmit} className="p-4">
+            <fieldset disabled={formik.isSubmitting}>
+              <Form.FloatingLabel
+                controlId="username"
+                label="Username"
+                className="mb-3"
+              >
+                <Form.Control 
+                  placeholder="Username"
+                  name="username"
+                  isInvalid={authFailed}
+                  required
+                  onChange={formik.handleChange}
+                  value={formik.values.username}
+                />
+              </Form.FloatingLabel>
+              <Form.FloatingLabel
+                controlId="password"
+                label="Password"
+                className="mb-3"
+              >
+                <Form.Control 
+                  placeholder="Password"
+                  name="password"
+                  isInvalid={authFailed}
+                  type="password"
+                  required
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                />
+                <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
+              </Form.FloatingLabel>
+              <Button type="submit" variant="primary">Submit</Button>
+            </fieldset>
+          </Form>
+        </div>
+      </div>
+    </div>
   );
 };
 
