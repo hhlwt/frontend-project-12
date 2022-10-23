@@ -52,7 +52,8 @@ const Login = () => {
                 label="Username"
                 className="mb-3"
               >
-                <Form.Control 
+                <Form.Control
+                  className='gth'
                   placeholder="Username"
                   name="username"
                   isInvalid={authFailed}
@@ -75,9 +76,9 @@ const Login = () => {
                   onChange={formik.handleChange}
                   value={formik.values.password}
                 />
-                <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">The username or password is incorrect</Form.Control.Feedback>
               </Form.FloatingLabel>
-              <Button type="submit" variant="primary">Submit</Button>
+              <Button type="submit" variant="dark">Submit</Button>
             </fieldset>
           </Form>
         </div>

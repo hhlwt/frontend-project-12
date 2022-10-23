@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const AuthButton = () => {
   const auth = useAuth();
 
-  return auth.loggedIn ? <Button onClick={auth.logOut}>LogOut</Button> : null;
+  return auth.loggedIn ? <Button onClick={auth.logOut} variant="secondary">LogOut</Button> : null;
 };
 
 export default AuthButton;
