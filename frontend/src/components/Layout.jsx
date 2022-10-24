@@ -4,13 +4,13 @@ import AuthButton from './AuthButton';
 
 function Layout() {
   return (
-    <>
+    <div className="d-flex flex-column h-100">
       <header>
         <Link to="/" className="home" style={{'paddingRight': '10px'}}>Home</Link>
         <AuthButton />
       </header>
-      <main className='container'><Outlet /></main>
-    </>
+      <Outlet />
+    </div>
   );
 }
 
