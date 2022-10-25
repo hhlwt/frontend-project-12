@@ -81,9 +81,9 @@ const Login = () => {
                       onChange={formik.handleChange}
                       value={formik.values.password}
                     />
-                    <Form.Control.Feedback type="invalid">The username or password is incorrect</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid" tooltip>The username or password is incorrect</Form.Control.Feedback>
                   </Form.FloatingLabel>
-                  <Button type="submit" variant="dark">Submit</Button>
+                  <Button type="submit" variant="dark" style={{'marginTop': '20px'}}>Submit</Button>
                 </fieldset>
               </Form>
             </Card.Body>
