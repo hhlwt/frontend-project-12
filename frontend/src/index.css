@@ -8,27 +8,37 @@ body {
 }
 
 header {
-  background-color: rgb(30, 30, 31);
+  background: rgba(73, 73, 73, 0.7);
   height: 100px;
+  min-height: 100px;
   padding-top: 35px;
-  border-bottom: 2px solid rgb(0, 0, 0);
-  border-radius: 10px;
+  border-radius: 20px;
   position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  backdrop-filter: blur(2px);
 }
 
-header a {
+a {
   text-decoration: none;
+  color: aliceblue;
+}
+
+.home {
+  margin-left: 20px;
   color: rgb(108, 109, 108);
   font-weight: 700;
   font-size: 20px;
 }
 
-.home {
-  margin-left: 20px;
+a:hover {
+  color: rgb(66, 182, 20);
 }
 
-header a:hover {
-  color: rgb(66, 182, 20);
+.logOut-btn {
+  position: absolute;
+  right: 15px;
+  top: 27px
 }
 
 .form-control {
@@ -37,7 +47,7 @@ header a:hover {
   border-radius: 12px;
   background: rgb(25, 25, 27);
   border-width: 1px;
-  transition: 0.5s;
+  transition: 0.7s;
 }
 
 .form-control:focus {
@@ -47,15 +57,15 @@ header a:hover {
   box-shadow: 0 0 15px rgb(4, 241, 24),
     0 0 20px rgb(4, 231, 23);
   border: 1px solid rgb(0, 255, 21);
-  background: rgb(25, 25, 27);
-}
-
-label {
-  color: rgb(136, 136, 141);
+  background-color: rgb(25, 25, 27);
 }
 
 .form-control:disabled {
   background: rgb(136, 136, 141);
+}
+
+label {
+  color: rgb(136, 136, 141);
 }
 
 .chat {
@@ -67,8 +77,14 @@ label {
   color: white;
 }
 
-.logOut-btn {
-  position: absolute;
-  right: 15px;
-  top: 27px
+.border-chat {
+  border-right: 2px solid black;
+}
+
+.card {
+  background-color: rgba(241, 238, 238, 0.2);
+}
+
+h1 {
+  color: rgb(199, 195, 195);
 }

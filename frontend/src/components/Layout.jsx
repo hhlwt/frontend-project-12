@@ -6,7 +6,7 @@ function Layout() {
   return (
     <div className="d-flex flex-column h-100">
       <header>
-        <Link to="/" className="home" style={{'paddingRight': '10px'}}>Home</Link>
+        <Link to="/" className="home">Home</Link>
         <AuthButton />
       </header>
       <Outlet />

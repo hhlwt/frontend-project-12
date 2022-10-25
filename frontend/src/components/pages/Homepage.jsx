@@ -25,11 +25,11 @@ const Homepage = () => {
   }, [dispatch]);
 
   return (
-    <div className="container h-100 my-4 overflow-hidden rounded shadow">
+    <div className="container h-100 my-5 overflow-hidden rounded shadow">
       <div className="row h-100 chat flex-md-row">
-        <div className="col-4 col-md-2 border-end border-secondary pt-5 px-0 channels">
+        <div className="col-4 col-md-2 border-chat pt-5 px-0 channels">
           <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
-            <span>Каналы</span>
+            <span>Channels</span>
             <button type="button" className="p-0 text-light btn btn-group-vertical">+</button>
           </div>
           <ul className="nav flex-column nav-pills nav-fill px-2">
@@ -42,7 +42,7 @@ const Homepage = () => {
               <p class="m-0">
                 <b># general</b>
               </p>
-              <span class="text-muted">0 сообщений</span>
+              <span class="text-muted">0 messages</span>
             </div>
             <div id="messages-box" class="chat-messages overflow-auto px-5 ">
               {messagesComps.length ? messagesComps : <h1>No messages yet</h1>}
