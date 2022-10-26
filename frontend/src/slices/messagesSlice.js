@@ -20,8 +20,8 @@ const messagesSlice = createSlice({
   initialState: messagesAdapter.getInitialState(),
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMessages.fulfilled, (state, action) => {
-        messagesAdapter.setAll(action);
+      .addCase(fetchMessages.fulfilled, (state, { payload }) => {
+        if (payload.length) messagesAdapter.setAll(payload);
       });
   },
 });
