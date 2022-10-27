@@ -1,7 +1,4 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchMessages, messagesSelectors } from '../../slices/messagesSlice';
-import { Nav } from 'react-bootstrap'
+import React from 'react';
 import Channels from '../Channels';
 import Messages from '../Messages';
 
@@ -20,15 +17,15 @@ const Chat = () => {
           <div className="d-flex flex-column h-100">
             <Messages />
             <div className="mt-auto px-5 py-3">
-              <form noValidate className="py-1 border rounded-2">
+              <form noValidate className="py-1 rounded-2">
                 <div className="input-group has-validation">
                 <input name="body"
                   id="chat-input"
                   aria-label="New message" 
                   placeholder="Enter a new message..." 
-                  className="border-0 p-0 ps-2 form-control" value="">
+                  className="border-0 p-0 ps-2 form-control">
                 </input>
-                <button type="submit" className="btn btn-dark">{'>'}</button>
+                <button type="submit" className="btn btn-dark chat-btn">{'>'}</button>
                 </div>
               </form>
             </div>

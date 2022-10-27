@@ -58,7 +58,7 @@ const Login = () => {
                     className="mb-3"
                   >
                     <Form.Control
-                      className='gth'
+                      className='auth-input'
                       placeholder="Username"
                       name="username"
                       isInvalid={authFailed}
@@ -73,6 +73,7 @@ const Login = () => {
                     className="mb-3"
                   >
                     <Form.Control 
+                      className='auth-input'
                       placeholder="Password"
                       name="password"
                       isInvalid={authFailed}

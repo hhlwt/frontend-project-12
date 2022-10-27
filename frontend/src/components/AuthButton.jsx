@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 const AuthButton = () => {
   const auth = useAuth();
 
-  return auth.loggedIn ? <Button onClick={auth.logOut} className="logOut-btn" variant="secondary">LogOut</Button> : null;
+  return auth.loggedIn ? <Button onClick={auth.logOut} className="logOut-btn" variant="secondary-outline">LogOut</Button> : null;
 };
 
 export default AuthButton;

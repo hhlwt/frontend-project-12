@@ -29,37 +29,38 @@ a {
   color: rgb(108, 109, 108);
   font-weight: 700;
   font-size: 20px;
+  font-style: italic;
 }
 
 a:hover {
-  color: rgb(66, 182, 20);
+  color: rgb(86, 219, 33);
 }
 
 .logOut-btn {
   position: absolute;
   right: 15px;
-  top: 27px
+  top: 25px;
+  font-size: 20px;
+  font-weight: 700;
+  font-style: italic;
+  color: rgb(108, 109, 108);
 }
 
-.form-control {
+.logOut-btn:hover {
+  color: rgb(86, 219, 33);
+}
+
+.auth-input {
   border: 3px solid grey;
   color: rgb(163, 159, 159);
   border-radius: 12px;
   background: rgb(25, 25, 27);
   border-width: 1px;
-  transition: 0.7s;
+  transition-duration: 0.4s;
+  transition-property: box-shadow, padding-left, letter-spacing, color, border;
 }
 
-.form-control:focus {
-  background-color: rgb(25, 25, 27);
-  box-shadow: none;
-}
-
-#chat-input {
-  box-shadow: none;
-}
-
-.form-control:focus {
+.auth-input:focus {
   padding-left: 15px;
   letter-spacing: 2px;
   color: rgb(121, 127, 133);
@@ -69,8 +70,27 @@ a:hover {
   background-color: rgb(25, 25, 27);
 }
 
-.form-control:disabled {
+.auth-input:disabled {
   background: rgb(136, 136, 141);
+}
+
+#chat-input {
+  color: rgb(163, 159, 159);
+  background: rgb(25, 25, 27);
+  transition-duration: 0.5s;
+  transition-property: padding-left, letter-spacing
+}
+
+#chat-input:focus {
+  box-shadow: none;
+  padding-left: 15px;
+  letter-spacing: 2px;
+  color: rgb(121, 127, 133);
+  background-color: rgb(25, 25, 27);
+}
+
+.chat-btn {
+  border-radius: 50%;
 }
 
 label {
@@ -111,6 +131,10 @@ h1 {
 .nav-link:hover {
   color: rgb(90, 89, 88);
   left: 10px;
+}
+
+.nav-link:focus {
+  color: rgb(90, 89, 88);
 }
 
 .nav-link.active:hover {
