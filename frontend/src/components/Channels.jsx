@@ -23,7 +23,7 @@ const Channels = () => {
   return (
     <Nav activeKey={currentChannelId} 
       className="flex-column" 
-      onSelect={(id) => dispatch(setActiveChannel(id))}
+      onSelect={(id) => dispatch(setActiveChannel(Number(id)))}
     >
       {channelsNavs}
     </Nav>

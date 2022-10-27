@@ -11,6 +11,7 @@ import RequireAuth from '../hoc/RequireAuth.jsx'
 import AuthProvider from "../hoc/AuthProvider.jsx";
 
 export default function App() {
+
   return (
     <AuthProvider>
       <Routes>

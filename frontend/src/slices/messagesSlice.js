@@ -18,13 +18,17 @@ const messagesAdapter = createEntityAdapter();
 const messagesSlice = createSlice({
   name: 'messages',
   initialState: messagesAdapter.getInitialState(),
+  reducers: {
+    addMessage: messagesAdapter.addOne,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchMessages.fulfilled, (state, { payload }) => {
-        if (payload.length) messagesAdapter.setAll(payload);
+        messagesAdapter.setAll(state, payload);
       });
   },
 });
 
+export const { addMessage } = messagesSlice.actions;
 export const messagesSelectors = messagesAdapter.getSelectors((state) => state.messages);
 export default messagesSlice.reducer;

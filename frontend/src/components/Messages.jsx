@@ -1,27 +1,33 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMessages, messagesSelectors } from '../slices/messagesSlice';
+import { fetchMessages, messagesSelectors, addMessage } from '../slices/messagesSlice';
 import { channelsSelectors } from '../slices/channelsSlice';
+import io from 'socket.io-client';
+
+const socket = io.connect();
 
 const Messages = () => {
   const dispatch = useDispatch();
-  // const messages = useSelector(messagesSelectors.selectAll);
-  const currentChannelId = useSelector(({channels}) => channels.activeChannel);
-  const activeChannel = useSelector((state) => channelsSelectors.selectById(state, currentChannelId)); 
-  const messages = [
-    { body: "1 message", channelId: 1, id: 1, username: "admin" },
-    { body: "2 message", channelId: 1, id: 2, username: "admin" },
-    { body: "3 message", channelId: 2, id: 3, username: "moder" },
-    { body: "4 message", channelId: 2, id: 4, username: "moder" },
-    { body: "5 message", channelId: 2, id: 5, username: "moder" },
-    { body: "6 message", channelId: 2, id: 6, username: "moder" },
-  ];
-
-  const currentChannelMessages = messages.filter(({channelId}) => channelId === Number(currentChannelId));
+  const messages = useSelector(messagesSelectors.selectAll);
+  const currentChannelId = useSelector((state) => state.channels.activeChannel);
+  const activeChannel = useSelector((state) => channelsSelectors.selectById(state, currentChannelId));
+  
+  const currentChannelMessages = messages.filter(({channelId}) => channelId === currentChannelId);
+  const messagesList = currentChannelMessages.map(({ body, username, id }) => {
+    return (
+      <div key={id} className="text-break mb-2">
+        <b>{username}</b>: {body}
+      </div>
+    );
+  });
 
   useEffect(() => {
     dispatch(fetchMessages());
-  }, [dispatch])
+  }, [dispatch]);
+
+  socket.on('newMessage', (data) => {
+    dispatch(addMessage(data));
+  });
 
   return (
     <>
@@ -32,14 +38,7 @@ const Messages = () => {
         <span className="text-muted">{`${currentChannelMessages.length} messages`}</span>
       </div>
       <div id="messages-box" className="chat-messages overflow-auto px-5">
-        {currentChannelMessages
-          .map(({ body, username, id }) => {
-            return (
-              <div key={id} className="text-break mb-2">
-                <b>{username}</b>: {body}
-              </div>
-            );
-          })}
+        {messagesList}
       </div>
     </>
   );
