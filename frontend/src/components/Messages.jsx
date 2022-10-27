@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMessages, messagesSelectors, addMessage } from '../slices/messagesSlice';
 import { channelsSelectors } from '../slices/channelsSlice';
@@ -8,6 +8,7 @@ const socket = io.connect();
 
 const Messages = () => {
   const dispatch = useDispatch();
+  const messagesEndRef = useRef(null)
   const messages = useSelector(messagesSelectors.selectAll);
   const currentChannelId = useSelector((state) => state.channels.activeChannel);
   const activeChannel = useSelector((state) => channelsSelectors.selectById(state, currentChannelId));
@@ -20,6 +21,14 @@ const Messages = () => {
       </div>
     );
   });
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "auto" })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [currentChannelId, messages]);
 
   useEffect(() => {
     dispatch(fetchMessages());
@@ -38,7 +47,8 @@ const Messages = () => {
         <span className="text-muted">{`${currentChannelMessages.length} messages`}</span>
       </div>
       <div id="messages-box" className="chat-messages overflow-auto px-5">
-        {messagesList}
+        <div ref={messagesEndRef} />
+        {messagesList.reverse()}
       </div>
     </>
   );
