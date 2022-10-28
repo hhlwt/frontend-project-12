@@ -2,11 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMessages, messagesSelectors, addMessage } from '../slices/messagesSlice';
 import { channelsSelectors } from '../slices/channelsSlice';
-import io from 'socket.io-client';
 
-const socket = io.connect();
-
-const Messages = () => {
+const Messages = ({ socket }) => {
   const dispatch = useDispatch();
   const messagesEndRef = useRef(null)
   const messages = useSelector(messagesSelectors.selectAll);
@@ -32,8 +29,7 @@ const Messages = () => {
 
   useEffect(() => {
     dispatch(fetchMessages());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   socket.on('newMessage', (data) => {
     dispatch(addMessage(data));

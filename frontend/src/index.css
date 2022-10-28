@@ -138,6 +138,10 @@ label {
   background-color: rgb(25, 25, 27);
 }
 
+#chat-input:disabled {
+  /* add styles */
+}
+
 .btn-submit-message {
   border-radius: 50%;
 }
@@ -148,12 +152,6 @@ label {
   transition: 0.1s;
   left: 0;
   padding-left: 10px;
-}
-
-.nav-link.active {
-  background-color: rgb(90, 89, 89);
-  color: white;
-  padding-left: 20px;
 }
 
 .nav-link.active:hover {
@@ -168,6 +166,12 @@ label {
 
 .nav-link:focus {
   color: rgb(90, 89, 88);
+}
+
+.nav-link.active {
+  background-color: rgb(90, 89, 89);
+  color: white;
+  padding-left: 20px;
 }
 
 #messages-box {

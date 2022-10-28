@@ -2,6 +2,9 @@ import React from 'react';
 import Channels from '../Channels';
 import Messages from '../Messages';
 import ChatForm from '../ChatForm';
+import io from 'socket.io-client';
+
+const socket = io.connect();
 
 const Chat = () => {
   return (
@@ -16,8 +19,8 @@ const Chat = () => {
         </div>
         <div className="col p-0 h-100">
           <div className="d-flex flex-column h-100">
-            <Messages />
-            <ChatForm />
+            <Messages socket={socket}/>
+            <ChatForm socket={socket}/>
           </div>
         </div>
       </div>
