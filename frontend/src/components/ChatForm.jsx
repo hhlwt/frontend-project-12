@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import io from 'socket.io-client';
 
@@ -13,8 +14,11 @@ const ChatForm = () => {
     e.preventDefault();
     socket.emit('newMessage', { body, channelId, username: 'admin' });
     setBody('');
-    inputEl.current.focus();
   };
+
+  useEffect(() => {
+    inputEl.current.focus();
+  })
 
   return (
     <div className="mt-auto px-5 py-3">
@@ -31,7 +35,9 @@ const ChatForm = () => {
           >
           </input>
           <button type="submit"
-            className="btn btn-dark chat-btn">
+            className="btn btn-dark btn-submit-message"
+            disabled={!body.length}
+          >
             {'>'}
           </button>
         </div>

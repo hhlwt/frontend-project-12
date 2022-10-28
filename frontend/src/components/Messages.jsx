@@ -32,7 +32,8 @@ const Messages = () => {
 
   useEffect(() => {
     dispatch(fetchMessages());
-  }, [dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   socket.on('newMessage', (data) => {
     dispatch(addMessage(data));
@@ -42,7 +43,7 @@ const Messages = () => {
     <>
       <div className="mb-4 p-3 shadow-lg small">
         <p className="m-0">
-          <b># {activeChannel && `${activeChannel.name}`}</b>
+          <b>{activeChannel && `# ${activeChannel.name}`}</b>
         </p>
         <span className="text-muted">{`${currentChannelMessages.length} messages`}</span>
       </div>

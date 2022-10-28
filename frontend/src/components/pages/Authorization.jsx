@@ -3,7 +3,6 @@ import { useFormik } from 'formik';
 import { Form, Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
-import * as yup from 'yup';
 import axios from 'axios';
 import routes from '../../routes';
 
@@ -18,17 +17,11 @@ const Login = () => {
       username: '',
       password: '',
     },
-    validationSchema: yup.object({
-      username: yup.string()
-        .required('This field is required'),
-      password: yup.string()
-        .required('This field is required'),
-    }),
     onSubmit: async (values) => {
       try {
-        const response = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('userToken', JSON.stringify(response.data.token));
-        logIn()
+        const { data: { token } } = await axios.post(routes.loginPath(), values);
+        localStorage.setItem('userId', JSON.stringify({ username: values.username, token }));
+        logIn();
         navigate('/', { replace: true });
       } catch (err) { 
         formik.setSubmitting(false);
@@ -45,11 +38,11 @@ const Login = () => {
     <div className="container-fluid h-100">
       <div className="row justify-content-center align-content-center h-100">
         <div className="col-12 col-md-8 col-xxl-6">
-          <Card className="shadow-lg">
+          <Card className="shadow-lg auth-backplate">
             <Card.Body className="row p-5">
               <Form onSubmit={formik.handleSubmit} className="p-4">
                 <div className="text-center">
-                  <h1>Log In</h1>
+                  <h1 className="auth-header">Log In</h1>
                 </div>
                 <fieldset disabled={formik.isSubmitting}>
                   <Form.FloatingLabel
@@ -84,7 +77,7 @@ const Login = () => {
                     />
                     <Form.Control.Feedback type="invalid" tooltip>The username or password is incorrect</Form.Control.Feedback>
                   </Form.FloatingLabel>
-                  <Button type="submit" variant="dark" style={{'marginTop': '20px'}}>Submit</Button>
+                  <Button type="submit" variant="dark" className="auth-btn-submit">Submit</Button>
                 </fieldset>
               </Form>
             </Card.Body>

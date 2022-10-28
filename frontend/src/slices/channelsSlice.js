@@ -5,9 +5,9 @@ import routes from "../routes";
 export const fetchChannels = createAsyncThunk(
   'channels/fetchChannels',
   async () => {
-    const userToken = JSON.parse(localStorage.getItem('userToken'));
+    const { token } = JSON.parse(localStorage.getItem('userId'));
     const response = await axios.get(routes.dataPath(), {
-      headers: { Authorization: `Bearer ${userToken}` },
+      headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
   }
