@@ -127,6 +127,8 @@ label {
   color: rgb(163, 159, 159);
   background: rgb(25, 25, 27);
   transition-duration: 0.5s;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
   transition-property: padding-left, letter-spacing
 }
 
@@ -139,11 +141,12 @@ label {
 }
 
 #chat-input:disabled {
-  /* add styles */
+  background-color: rgb(85, 85, 85);
 }
 
 .btn-submit-message {
   border-radius: 50%;
+  min-width: 42px;
 }
 
 .nav-link {
