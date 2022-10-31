@@ -77,7 +77,9 @@ const Login = () => {
                     />
                     <Form.Control.Feedback type="invalid" tooltip>The username or password is incorrect</Form.Control.Feedback>
                   </Form.FloatingLabel>
-                  <Button type="submit" variant="dark" className="mt-3">Submit</Button>
+                  <div className="d-flex justify-content-end">
+                    <Button type="submit" variant="dark" className="mt-3">Submit</Button>
+                  </div>
                 </fieldset>
               </Form>
             </Card.Body>

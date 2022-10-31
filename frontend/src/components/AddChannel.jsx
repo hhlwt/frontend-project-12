@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
-import { setActiveChannel, addChannel } from '../slices/channelsSlice';
 
-const AddChannelButton = ({ socket, channels }) => {
+const AddChannel = ({ socket, channels }) => {
   const [modalShow, setModalShow] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const [isFailedVal, setIsFailedVal] = useState(false)
+  const [modalState, setModalState] = useState('idle');
+  const [inputError, setInputError] = useState('');
 
 
   const handleSubmit = (e) => {
@@ -17,21 +17,31 @@ const AddChannelButton = ({ socket, channels }) => {
     });
 
     if (isThereSameChannel) {
-      console.log('exists')
-      setIsFailedVal(true)
+      setInputError('Сhannel with this name already exists');
+      setModalState('failed');
+    } else if (inputValue.length < 3 || inputValue.length > 20) {
+      setInputError('Сhannel name must be 3 to 20 characters');
+      setModalState('failed');
     } else {
-      socket.emit('newChannel', { name: inputValue })
-      setInputValue('');
-      setModalShow(false);
+      socket.timeout(5000).emit('newChannel', { name: inputValue }, (err) => {
+        if (err) {
+          setInputError('Network error');
+          setModalState('failed');
+        } else {
+          setModalShow(false);
+          setInputValue('');
+          setModalState('idle');
+        }
+      });
     }
   };
-
+  
   return (
     <>
     <button type="button" onClick={() => {
       setModalShow(true)
       setInputValue('');
-      setIsFailedVal(false)
+      setModalState('idle')
     }} className="p-0 text-light btn">
       +
     </button>
@@ -56,10 +66,12 @@ const AddChannelButton = ({ socket, channels }) => {
               required
               onChange={(e) => setInputValue(e.target.value)}
               value={inputValue}
-              isInvalid={isFailedVal}
+              isInvalid={modalState === 'failed'}
             />
-            <Form.Control.Feedback type="invalid" className="ps-1">Error</Form.Control.Feedback>
-            <div className="d-flex justify-content-end">
+            <Form.Control.Feedback type="invalid" className="ps-1">{inputError}</Form.Control.Feedback>
+            <div className="d-flex justify-content-end mt-3">
+              <Button className="me-2" onClick={() => setModalShow(false)}
+               variant="dark">Cancel</Button>
               <Button type="submit" variant="dark">Submit</Button>
             </div>
         </Form>
@@ -69,4 +81,4 @@ const AddChannelButton = ({ socket, channels }) => {
   );
 };
 
-export default AddChannelButton;
+export default AddChannel;

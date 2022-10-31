@@ -176,6 +176,41 @@ label {
   padding-left: 20px;
 }
 
+.nav-link.active+button {
+  background-color: rgb(90, 89, 89);
+}
+
+.toggle {
+  box-shadow: none;
+  border: none;
+  background-color: transparent;
+}
+
+.toggle:hover {
+  background-color: transparent;
+}
+
+button.toggle:active {
+  background-color: #39393a !important;
+}
+
+.dropdown-menu {
+  background-color: #949494;
+}
+
+.dropdown-item:hover {
+  background-color: #6e6e6e;
+}
+
+.dropdown-item:active {
+  color: #39393a;
+  background-color: #6e6e6e;
+}
+
+.dropdown-item:focus {
+  background-color: #6e6e6e;
+}
+
 #messages-box {
   display: flex;
   flex-direction: column-reverse;
@@ -215,7 +250,7 @@ label {
   color: rgb(163, 159, 159);
   border-radius: 12px;
   background: rgb(25, 25, 27);
-  transition: 0.4s;
+  transition-property: padding-left, letter-spacing;
 }
 
 .modal-input:focus {
@@ -234,6 +269,5 @@ label {
 .btn-close:focus {
   box-shadow: none;
 }
-
 
 /* ******************************************************************* */

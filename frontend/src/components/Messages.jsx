@@ -31,8 +31,8 @@ const Messages = ({ socket }) => {
     dispatch(fetchMessages());
   }, [dispatch]);
 
-  socket.on('newMessage', (data) => {
-    dispatch(addMessage(data));
+  socket.on('newMessage', (message) => {
+    dispatch(addMessage(message));
   });
 
   return (
