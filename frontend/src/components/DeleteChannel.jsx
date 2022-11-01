@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Modal, Dropdown } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 
 const DeleteChannel = ({id, socket}) => {
   const [modalShow, setModalShow] = useState(false);
@@ -12,7 +12,11 @@ const DeleteChannel = ({id, socket}) => {
 
   return (
     <>
-    <Dropdown.Item href="#" onClick={() => setModalShow(true)}>Delete</Dropdown.Item>
+    <button className="dropdown-button" onClick={() => {
+      const dropdownMenu = document.querySelector('.dropdown-menu.show');
+      dropdownMenu.classList.remove('show');
+      setModalShow(true)
+    }}>Delete</button>
     <Modal
       show={modalShow}
       onHide={() => setModalShow(false)}

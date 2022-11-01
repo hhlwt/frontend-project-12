@@ -190,7 +190,7 @@ label {
   background-color: transparent;
 }
 
-button.toggle:active {
+.toggle:active {
   background-color: #39393a !important;
 }
 
@@ -198,17 +198,14 @@ button.toggle:active {
   background-color: #949494;
 }
 
-.dropdown-item:hover {
-  background-color: #6e6e6e;
+.dropdown-button {
+  border: none;
+  width: 100%;
+  background-color: #949494;
 }
 
-.dropdown-item:active {
-  color: #39393a;
-  background-color: #6e6e6e;
-}
-
-.dropdown-item:focus {
-  background-color: #6e6e6e;
+.dropdown-button:hover {
+  background-color: #797979;
 }
 
 #messages-box {

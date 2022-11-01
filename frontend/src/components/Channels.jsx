@@ -5,6 +5,7 @@ import { ButtonGroup, Nav } from 'react-bootstrap';
 import AddChannel from './AddChannel';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DeleteChannel from './DeleteChannel';
+import RenameChannel from './RenameChannel';
 
 const Channels = ({ socket }) => {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const Channels = ({ socket }) => {
   
         <Dropdown.Menu>
           <DeleteChannel id={id} socket={socket}/>
-          <Dropdown.Item href="#" onClick={()=> console.log(2)}>Rename</Dropdown.Item>
+          <RenameChannel id={id} socket={socket}/>
         </Dropdown.Menu>
       </Dropdown>
     )
