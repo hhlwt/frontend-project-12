@@ -1,4 +1,5 @@
 import { createSlice, createEntityAdapter, createAsyncThunk } from "@reduxjs/toolkit";
+import { deleteChannel } from '../slices/channelsSlice';
 import axios from "axios";
 import routes from "../routes";
 
@@ -25,6 +26,11 @@ const messagesSlice = createSlice({
     builder
       .addCase(fetchMessages.fulfilled, (state, { payload }) => {
         messagesAdapter.setAll(state, payload);
+      })
+      .addCase(deleteChannel, (state, {payload}) => {
+        const messages = Object.values(state.entities);
+        const filteredMessages = messages.filter(({channelId}) => channelId !== payload);
+        messagesAdapter.setAll(state, filteredMessages);
       });
   },
 });

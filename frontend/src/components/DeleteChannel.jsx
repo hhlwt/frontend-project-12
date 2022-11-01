@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
+import { deleteChannel, setActiveChannel } from '../slices/channelsSlice';
+import { useDispatch } from 'react-redux';
 
 const DeleteChannel = ({id, socket}) => {
   const [modalShow, setModalShow] = useState(false);
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setModalShow(false)
-    alert('Deleted!')
+    socket.timeout(5000).emit('removeChannel', { id }, (err) => {
+      if (err) {
+        console.log('ERR!!!')
+      } else {
+        setModalShow(false)
+        dispatch(deleteChannel(id));
+        dispatch(setActiveChannel(1));
+      }
+    });
   }
 
   return (

@@ -41,7 +41,7 @@ const AddChannel = ({ socket, channels }) => {
     <button type="button" onClick={() => {
       setModalShow(true)
       setInputValue('');
-      setModalState('idle')
+      setModalState('idle');
     }} className="p-0 text-light btn">
       +
     </button>

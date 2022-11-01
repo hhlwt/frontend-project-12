@@ -16,7 +16,7 @@ const Channels = ({ socket }) => {
     dispatch(addChannel(channel))
     dispatch(setActiveChannel(channel.id))
   })
-
+  
   useEffect(() => {
     dispatch(fetchChannels());
   }, [dispatch])
@@ -31,7 +31,7 @@ const Channels = ({ socket }) => {
   
         <Dropdown.Menu>
           <DeleteChannel id={id} socket={socket}/>
-          <RenameChannel id={id} socket={socket}/>
+          <RenameChannel id={id} socket={socket} channels={channels} name={name}/>
         </Dropdown.Menu>
       </Dropdown>
     )
