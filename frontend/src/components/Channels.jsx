@@ -1,9 +1,8 @@
 import React, { useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchChannels, channelsSelectors, setActiveChannel, addChannel } from '../slices/channelsSlice';
-import { ButtonGroup, Nav } from 'react-bootstrap';
+import { fetchChannels, channelsSelectors, setActiveChannel, addChannel, deleteChannel, updateChannel } from '../slices/channelsSlice';
+import { ButtonGroup, Nav, Dropdown } from 'react-bootstrap';
 import AddChannel from './AddChannel';
-import Dropdown from 'react-bootstrap/Dropdown';
 import DeleteChannel from './DeleteChannel';
 import RenameChannel from './RenameChannel';
 
@@ -15,7 +14,16 @@ const Channels = ({ socket }) => {
   socket.on('newChannel', (channel) => {
     dispatch(addChannel(channel))
     dispatch(setActiveChannel(channel.id))
-  })
+  });
+
+  socket.on('renameChannel', ({ id, name }) => {
+    dispatch(updateChannel({id, changes: { name }}));
+  });
+
+  socket.on('removeChannel', ({ id }) => {
+    dispatch(deleteChannel(id));
+    dispatch(setActiveChannel(1));
+  });
   
   useEffect(() => {
     dispatch(fetchChannels());

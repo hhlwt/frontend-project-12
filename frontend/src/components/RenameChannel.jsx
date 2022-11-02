@@ -1,35 +1,32 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { updateChannel } from '../slices/channelsSlice';
 
 const RenameChannel = ({id, socket, channels, name}) => {
   const [modalShow, setModalShow] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [modalState, setModalState] = useState('idle');
-  const [inputError, setInputError] = useState('');
-  const dispatch = useDispatch();
+  const [processError, setProcessError] = useState('');
   const inputEl = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setModalState('processing');
     const isThereSameChannel = channels.some(({name}) => {
       return name === inputValue;
     });
 
     if (isThereSameChannel) {
-      setInputError('Сhannel with this name already exists');
+      setProcessError('Сhannel with this name already exists');
       setModalState('failed');
     } else if (inputValue.length < 3 || inputValue.length > 20) {
-      setInputError('Сhannel name must be 3 to 20 characters');
+      setProcessError('Сhannel name must be 3 to 20 characters');
       setModalState('failed');
     } else {
       socket.timeout(5000).emit('renameChannel', { id, name: inputValue }, (err) => {
         if (err) {
-          setInputError('Network error');
+          setProcessError('Network error');
           setModalState('failed');
         } else {
-          dispatch(updateChannel({id, changes: { name: inputValue }}));
           setModalShow(false);
           setModalState('idle');
         }
@@ -67,6 +64,7 @@ const RenameChannel = ({id, socket, channels, name}) => {
       <Modal.Body>
         <Form onSubmit={handleSubmit} >
           <Form.Control
+              disabled={modalState === 'processing'}
               className="modal-input mb-2"
               placeholder="Channel name"
               autoFocus
@@ -76,10 +74,16 @@ const RenameChannel = ({id, socket, channels, name}) => {
               isInvalid={modalState === 'failed'}
               ref={inputEl}
             />
-            <Form.Control.Feedback type="invalid" className="ps-1">{inputError}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid" className="ps-1">{processError}</Form.Control.Feedback>
             <div className="d-flex justify-content-end">
-              <Button className="me-2" onClick={() => setModalShow(false)} variant="dark">Cancel</Button>
-              <Button type="submit" onClick={handleSubmit} variant="dark">Submit</Button>
+              <Button disabled={modalState === 'processing'} className="me-2" onClick={() => setModalShow(false)} variant="dark">Cancel</Button>
+              <Button disabled={modalState === 'processing'} type="submit" onClick={handleSubmit} variant="dark">
+                {modalState === 'processing' ?
+                <div className="spinner-border spinner-border-sm" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div> :
+                'Submit'}
+              </Button>
             </div>
         </Form>
       </Modal.Body>

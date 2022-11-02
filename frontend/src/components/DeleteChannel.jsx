@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import { deleteChannel, setActiveChannel } from '../slices/channelsSlice';
-import { useDispatch } from 'react-redux';
 
 const DeleteChannel = ({id, socket}) => {
   const [modalShow, setModalShow] = useState(false);
-  const dispatch = useDispatch();
+  const [modalState, setModalState] = useState('idle');
+  const [processError, setProcessError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setModalState('processing');
     socket.timeout(5000).emit('removeChannel', { id }, (err) => {
       if (err) {
-        console.log('ERR!!!')
+        setProcessError('Network error');
+        setModalState('failed');
       } else {
-        setModalShow(false)
-        dispatch(deleteChannel(id));
-        dispatch(setActiveChannel(1));
+        setModalShow(false);
+        setModalState('idle');
       }
     });
   }
@@ -25,7 +25,8 @@ const DeleteChannel = ({id, socket}) => {
     <button className="dropdown-button" onClick={() => {
       const dropdownMenu = document.querySelector('.dropdown-menu.show');
       dropdownMenu.classList.remove('show');
-      setModalShow(true)
+      setModalShow(true);
+      setModalState('idle');
     }}>Delete</button>
     <Modal
       show={modalShow}
@@ -41,10 +42,17 @@ const DeleteChannel = ({id, socket}) => {
       </Modal.Header>
       <Modal.Body>
         <p style={{'color':'white'}} className="mb-0">Are you sure?</p>
-          <div className="d-flex justify-content-end">
-            <Button className="me-2" onClick={() => setModalShow(false)} variant="dark">Cancel</Button>
-            <Button type="submit" onClick={handleSubmit} variant="dark">Submit</Button>
-          </div>
+        {modalState === 'failed' ? <p className="text-danger">{processError}</p> : null}
+        <div className="d-flex justify-content-end">
+          <Button disabled={modalState === 'processing'} className="me-2" onClick={() => setModalShow(false)} variant="dark">Cancel</Button>
+          <Button disabled={modalState === 'processing'} type="submit" onClick={handleSubmit} variant="dark">
+            {modalState === 'processing' ?
+              <div className="spinner-border spinner-border-sm" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div> :
+            'Submit'}
+          </Button>
+        </div>
       </Modal.Body>
     </Modal>
     </>
