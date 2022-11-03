@@ -19,8 +19,8 @@ const Login = () => {
     },
     onSubmit: async (values) => {
       try {
-        const { data: { token } } = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('userId', JSON.stringify({ username: values.username, token }));
+        const { data } = await axios.post(routes.loginPath(), values);
+        localStorage.setItem('userId', JSON.stringify(data));
         logIn();
         navigate('/', { replace: true });
       } catch (err) { 
