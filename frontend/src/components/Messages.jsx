@@ -2,8 +2,10 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMessages, messagesSelectors, addMessage } from '../slices/messagesSlice';
 import { channelsSelectors } from '../slices/channelsSlice';
+import { useTranslation } from 'react-i18next';
 
 const Messages = ({ socket }) => {
+  const {t} = useTranslation();
   const dispatch = useDispatch();
   const messages = useSelector(messagesSelectors.selectAll);
   const currentChannelId = useSelector((state) => state.channels.activeChannel);
@@ -41,7 +43,7 @@ const Messages = ({ socket }) => {
         <p className="m-0">
           <b>{activeChannel && `# ${activeChannel.name}`}</b>
         </p>
-        <span className="text-muted">{`${currentChannelMessages.length} messages`}</span>
+        <span className="text-muted">{t('chat.messagesCounter.count', { count: currentChannelMessages.length })}</span>
       </div>
       <div id="messages-box" className="chat-messages overflow-auto px-5">
         {messagesList.reverse()}

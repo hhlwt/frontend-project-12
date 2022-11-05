@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { Form, Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import useAuth from '../../hooks/useAuth';
 import axios from 'axios';
 import * as Yup from 'yup';
 import routes from '../../routes';
 
 const Signup = () => {
+  const {t} = useTranslation();
   const [signupFailed, setSignupFailed] = useState(false);
   const navigate = useNavigate();
   const { logIn } = useAuth();
@@ -20,15 +22,14 @@ const Signup = () => {
     },
     validationSchema: Yup.object({
       username: Yup.string()
-        .min(3, 'Username must be 3 to 20 characters')
-        .max(20, 'Username must be 3 to 20 characters')
-        .required('Required'),
+        .min(3, t('signUp.nameLength'))
+        .max(20, t('signUp.nameLength'))
+        .required(t('signUp.fieldIsRequired')),
       password: Yup.string()
-        .min(6, 'Password must be at least 6 characters')
-        .required('Required'),
+        .min(6, t('signUp.passwordLength'))
+        .required(t('signUp.fieldIsRequired')),
       passwordConfirmation: Yup.string()
-        .oneOf([Yup.ref('password')], 'Passwords must match')
-        .required('Required'),
+        .oneOf([Yup.ref('password')], t('signUp.passwordsMatch')),
     }),
     onSubmit: async ({ username, password }) => {
       try {
@@ -51,12 +52,12 @@ const Signup = () => {
             <Card.Body className="row p-5">
               <Form onSubmit={formik.handleSubmit} className="p-4">
                 <div className="text-center">
-                  <h1 className="auth-header">Sign up</h1>
+                  <h1 className="auth-header">{t('signUp.header')}</h1>
                 </div>
                 <fieldset disabled={formik.isSubmitting}>
                   <Form.FloatingLabel
                     controlId="username"
-                    label="Username"
+                    label={t('signUp.usernamePlaceholder')}
                     className="mb-4"
                   >
                     <Form.Control
@@ -72,7 +73,7 @@ const Signup = () => {
                   </Form.FloatingLabel>
                   <Form.FloatingLabel
                     controlId="password"
-                    label="Password"
+                    label={t('signUp.passwordPlaceholder')}
                     className="mb-4"
                   >
                     <Form.Control
@@ -89,7 +90,7 @@ const Signup = () => {
                   </Form.FloatingLabel>
                   <Form.FloatingLabel
                     controlId="passwordConfirmation"
-                    label="Password Confirmation"
+                    label={t('signUp.passwordConfirmationPlaceholder')}
                     className="mb-2"
                   >
                     <Form.Control
@@ -106,7 +107,7 @@ const Signup = () => {
                   </Form.FloatingLabel>
                   {signupFailed ? <div className='text-danger'>User already exists</div> : null}
                   <div className="d-flex justify-content-end">
-                    <Button type="submit" variant="dark" className="mt-3">Sign up</Button>
+                    <Button type="submit" variant="dark" className="mt-3">{t('signUp.submit')}</Button>
                   </div>
                 </fieldset>
               </Form>

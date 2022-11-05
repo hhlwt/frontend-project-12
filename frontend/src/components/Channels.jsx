@@ -2,11 +2,13 @@ import React, { useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchChannels, channelsSelectors, setActiveChannel, addChannel, deleteChannel, updateChannel } from '../slices/channelsSlice';
 import { ButtonGroup, Nav, Dropdown } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import AddChannel from './AddChannel';
 import DeleteChannel from './DeleteChannel';
 import RenameChannel from './RenameChannel';
 
 const Channels = ({ socket }) => {
+  const {t} = useTranslation();
   const dispatch = useDispatch();
   const channels = useSelector(channelsSelectors.selectAll);
   const currentChannelId = useSelector(({channels}) => channels.activeChannel);
@@ -52,7 +54,7 @@ const Channels = ({ socket }) => {
   return (
     <>
       <div className="d-flex justify-content-between mb-3 ps-2 pe-2">
-        <span>Channels</span>
+        <span>{t('chat.channelsHeader')}</span>
         <AddChannel socket={socket} channels={channels}/>
       </div>
       <Nav activeKey={currentChannelId}

@@ -6,7 +6,7 @@ function Layout() {
   return (
     <div className="d-flex flex-column h-100">
       <header>
-        <Link to="/" className="chat-link">Home</Link>
+        <Link to="/" className="chat-link">Hexlet chat</Link>
         <LogOutButton />
       </header>
       <Outlet />

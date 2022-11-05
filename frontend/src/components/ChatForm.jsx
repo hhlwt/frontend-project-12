@@ -2,8 +2,10 @@ import React, { useRef } from 'react';
 import { useImmer } from 'use-immer';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const ChatForm = ({ socket }) => {
+  const {t} = useTranslation();
   const [chatForm, updateChatForm] = useImmer({
     state: 'idle',
     value: '',
@@ -44,7 +46,7 @@ const ChatForm = ({ socket }) => {
             ref={inputEl}
             id="chat-input"
             aria-label="New message" 
-            placeholder="Enter a new message..." 
+            placeholder={t('chat.inputPlaceholder')}
             className="border-0 p-0 ps-2 form-control"
             value={chatForm.value}
             onChange={(e) => updateChatForm((form) => {

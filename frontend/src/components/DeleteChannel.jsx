@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 const DeleteChannel = ({id, socket}) => {
+  const {t} = useTranslation();
   const [modalShow, setModalShow] = useState(false);
   const [modalState, setModalState] = useState('idle');
   const [processError, setProcessError] = useState('');
@@ -11,7 +13,7 @@ const DeleteChannel = ({id, socket}) => {
     setModalState('processing');
     socket.timeout(5000).emit('removeChannel', { id }, (err) => {
       if (err) {
-        setProcessError('Network error');
+        setProcessError('networkErr');
         setModalState('failed');
       } else {
         setModalShow(false);
@@ -27,7 +29,7 @@ const DeleteChannel = ({id, socket}) => {
       dropdownMenu.classList.remove('show');
       setModalShow(true);
       setModalState('idle');
-    }}>Delete</button>
+    }}>{t('chat.deleteChannelModal.triggerButton')}</button>
     <Modal
       show={modalShow}
       onHide={() => setModalShow(false)}
@@ -37,20 +39,20 @@ const DeleteChannel = ({id, socket}) => {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter" className="text-light">
-          Delete channel
+          {t('chat.deleteChannelModal.header')}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p style={{'color':'white'}} className="mb-0">Are you sure?</p>
-        {modalState === 'failed' ? <p className="text-danger">{processError}</p> : null}
+        <p style={{'color':'white'}} className="mb-0">{t('chat.deleteChannelModal.body')}</p>
+        {modalState === 'failed' ? <p className="text-danger">{t(`chat.modalErrors.${processError}`)}</p> : null}
         <div className="d-flex justify-content-end">
-          <Button disabled={modalState === 'processing'} className="me-2" onClick={() => setModalShow(false)} variant="dark">Cancel</Button>
+          <Button disabled={modalState === 'processing'} className="me-2" onClick={() => setModalShow(false)} variant="dark">{t('chat.modalButtons.cancel')}</Button>
           <Button disabled={modalState === 'processing'} type="submit" onClick={handleSubmit} variant="dark">
             {modalState === 'processing' ?
               <div className="spinner-border spinner-border-sm" role="status">
                 <span className="visually-hidden">Loading...</span>
               </div> :
-            'Submit'}
+            t('chat.modalButtons.submit')}
           </Button>
         </div>
       </Modal.Body>
