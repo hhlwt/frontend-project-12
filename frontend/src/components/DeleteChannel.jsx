@@ -7,20 +7,22 @@ const DeleteChannel = ({id, socket}) => {
   const {t} = useTranslation();
   const [modalShow, setModalShow] = useState(false);
   const [processState, setProcessState] = useState('idle');
-  const [processError, setProcessError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setProcessState('processing');
     socket.timeout(5000).emit('removeChannel', { id }, (err) => {
       if (err) {
-        setProcessError('networkErr');
-        setProcessState('failed');
+        toast(t('toastify.networkErr'), {
+          progressClassName: "danger-progress-bar",
+          className: "glowing-alert",
+        });
+        setProcessState('idle');
       } else {
         setModalShow(false);
         setProcessState('idle');
         toast(t('toastify.deleteChannelFulfilled'), {
-          progressClassName: "delete-progress-bar",
+          progressClassName: "danger-progress-bar",
         })
       }
     });
@@ -48,7 +50,6 @@ const DeleteChannel = ({id, socket}) => {
       </Modal.Header>
       <Modal.Body>
         <p style={{'color':'white'}} className="mb-0">{t('chat.deleteChannelModal.body')}</p>
-        {processState === 'failed' ? <p className="text-danger">{t(`chat.modalErrors.${processError}`)}</p> : null}
         <div className="d-flex justify-content-end">
           <Button disabled={processState === 'processing'} className="me-2" onClick={() => setModalShow(false)} variant="dark">{t('chat.modalButtons.cancel')}</Button>
           <Button disabled={processState === 'processing'} type="submit" onClick={handleSubmit} variant="dark">

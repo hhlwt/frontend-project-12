@@ -26,14 +26,17 @@ const AddChannel = ({ socket, channels }) => {
     } else {
       socket.timeout(5000).emit('newChannel', { name: inputValue }, (err) => {
         if (err) {
-          setProcessError('networkErr');
-          setProcessState('failed');
+          toast(t('toastify.networkErr'), {
+            progressClassName: "danger-progress-bar",
+            className: "glowing-alert",
+          });
+          setProcessState('idle');
         } else {
           setModalShow(false);
           setInputValue('');
           setProcessState('idle');
           toast(t('toastify.addChannelFulfilled'), {
-            progressClassName: "add-progress-bar",
+            progressClassName: "success-progress-bar",
           });
         }
       });

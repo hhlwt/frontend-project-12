@@ -27,13 +27,16 @@ const RenameChannel = ({id, socket, channels, name}) => {
     } else {
       socket.timeout(5000).emit('renameChannel', { id, name: inputValue }, (err) => {
         if (err) {
-          setProcessError('networkErr');
-          setProcessState('failed');
+          toast(t('toastify.networkErr'), {
+            progressClassName: "danger-progress-bar",
+            className: "glowing-alert",
+          });
+          setProcessState('idle');
         } else {
           setModalShow(false);
           setProcessState('idle');
           toast(t('toastify.renameChannelFulfilled'), {
-            progressClassName: "rename-progress-bar",
+            progressClassName: "info-progress-bar",
           });
         }
       });

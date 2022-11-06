@@ -3,6 +3,7 @@ import { useImmer } from 'use-immer';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const ChatForm = ({ socket }) => {
   const {t} = useTranslation();
@@ -26,7 +27,10 @@ const ChatForm = ({ socket }) => {
     socket.timeout(5000).emit('newMessage', { body: chatForm.value, channelId, username }, (err) => {
       if (err) {
         updateChatForm((form) => {
-          form.state = 'failed';
+          toast(t('toastify.networkErr'), {
+            progressClassName: "danger-progress-bar",
+          });
+          form.state = 'idle';
         })
       } else {
         updateChatForm((form) => {

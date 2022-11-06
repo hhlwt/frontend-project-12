@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { Form, Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import useAuth from '../../hooks/useAuth';
 import axios from 'axios';
 import * as Yup from 'yup';
@@ -39,8 +40,13 @@ const Signup = () => {
         navigate('/', { replace: true });
       } catch (err){
         formik.setSubmitting(false);
-        const currentError = err.code === 'ERR_NETWORK' ? 'networkErr' : 'userExists';
-        setProcessError(currentError);
+        if (err.code === 'ERR_NETWORK') {
+          toast(t('toastify.networkErr'), {
+            progressClassName: "danger-progress-bar",
+          });
+          return;
+        }
+        setProcessError('userExists');
       }
     },
   });
@@ -106,7 +112,7 @@ const Signup = () => {
                     />
                     <Form.Control.Feedback type="invalid" tooltip>{formik.errors.passwordConfirmation}</Form.Control.Feedback>
                   </Form.FloatingLabel>
-                  {processError ? t(`signUp.${processError}`) : null}
+                  {processError ? <div className="text-danger">{t(`signUp.${processError}`)}</div> : null}
                   <div className="d-flex justify-content-end">
                     <Button type="submit" variant="dark" className="mt-3">
                     {formik.isSubmitting ? 

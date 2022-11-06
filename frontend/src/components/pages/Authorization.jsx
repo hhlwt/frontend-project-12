@@ -6,6 +6,7 @@ import useAuth from '../../hooks/useAuth';
 import axios from 'axios';
 import routes from '../../routes';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 
 const Login = () => {
@@ -27,8 +28,13 @@ const Login = () => {
         navigate('/', { replace: true });
       } catch (err) { 
         formik.setSubmitting(false);
-        const currentError = err.code === 'ERR_NETWORK' ? 'networkErr' : 'invalidPassUsername';
-        setProcessError(currentError);
+        if (err.code === 'ERR_NETWORK') {
+          toast(t('toastify.networkErr'), {
+            progressClassName: "danger-progress-bar",
+          });
+          return;
+        }
+        setProcessError('invalidPassUsername');
       }
     },
   });
