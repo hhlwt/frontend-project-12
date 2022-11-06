@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, Form} from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const AddChannel = ({ socket, channels }) => {
   const {t} = useTranslation();
@@ -31,6 +32,9 @@ const AddChannel = ({ socket, channels }) => {
           setModalShow(false);
           setInputValue('');
           setProcessState('idle');
+          toast(t('toastify.addChannelFulfilled'), {
+            progressClassName: "add-progress-bar",
+          });
         }
       });
     }

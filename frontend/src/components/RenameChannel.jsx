@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const RenameChannel = ({id, socket, channels, name}) => {
   const {t} = useTranslation();
@@ -31,6 +32,9 @@ const RenameChannel = ({id, socket, channels, name}) => {
         } else {
           setModalShow(false);
           setProcessState('idle');
+          toast(t('toastify.renameChannelFulfilled'), {
+            progressClassName: "rename-progress-bar",
+          });
         }
       });
     }

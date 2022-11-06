@@ -2,6 +2,11 @@ const ru = {
   translation: {
     logOutBtn: 'Выйти',
     notFound: 'Страница не найдена',
+    toastify: {
+      addChannelFulfilled: '🤠 Новый канал создан!',
+      deleteChannelFulfilled: '☠ Канал удален!',
+      renameChannelFulfilled: '✏ Канал переименован!',
+    },
     authorization: {
       header: 'Войти',
       footer: 'Регистрация',

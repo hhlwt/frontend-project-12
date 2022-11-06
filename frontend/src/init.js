@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './slices/index.js';
 import AuthProvider from "./hoc/AuthProvider.jsx";
+import 'react-toastify/dist/ReactToastify.css';
 import './index.css'
 
 const runApp = async () => {
@@ -17,7 +18,7 @@ const runApp = async () => {
     .use(initReactI18next)
     .init({
       resources,
-      fallbackLng: 'ru',
+      fallbackLng: 'en',
     });
 
   const root = ReactDOM.createRoot(document.getElementById('chat'));

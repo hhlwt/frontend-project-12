@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const DeleteChannel = ({id, socket}) => {
   const {t} = useTranslation();
@@ -18,6 +19,9 @@ const DeleteChannel = ({id, socket}) => {
       } else {
         setModalShow(false);
         setProcessState('idle');
+        toast(t('toastify.deleteChannelFulfilled'), {
+          progressClassName: "delete-progress-bar",
+        })
       }
     });
   }

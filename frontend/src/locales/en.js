@@ -2,6 +2,11 @@ const en = {
   translation: {
     logOutBtn: 'LogOut',
     notFound: 'Page not found',
+    toastify: {
+      addChannelFulfilled: '🤠 A new channel has been added!',
+      deleteChannelFulfilled: '☠ The channel has been deleted!',
+      renameChannelFulfilled: '✏ The channel has been renamed!',
+    },
     authorization: {
       header: 'Log in',
       footer: 'Sign up',

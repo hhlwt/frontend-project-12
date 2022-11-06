@@ -265,3 +265,25 @@ label {
 }
 
 /* ******************************************************************* */
+
+
+
+
+/* Toastify */
+.Toastify__toast-theme--dark {
+  background-color: rgb(36, 36, 36);
+}
+
+.add-progress-bar {
+  background-color: rgb(119, 228, 92);
+}
+
+.rename-progress-bar {
+  background-color: rgb(115, 186, 207);
+}
+
+.delete-progress-bar {
+  background-color: rgb(196, 81, 81);
+}
+
+/* ******************************************************************* */
