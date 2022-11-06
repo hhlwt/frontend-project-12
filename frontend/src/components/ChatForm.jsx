@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 const ChatForm = ({ socket }) => {
+  const filter = require('leo-profanity');
+  filter.add(filter.getDictionary('ru'));
   const {t} = useTranslation();
   const [chatForm, updateChatForm] = useImmer({
     state: 'idle',
@@ -24,7 +26,7 @@ const ChatForm = ({ socket }) => {
     updateChatForm((form) => {
       form.state = 'processing'
     });
-    socket.timeout(5000).emit('newMessage', { body: chatForm.value, channelId, username }, (err) => {
+    socket.timeout(5000).emit('newMessage', { body: filter.clean(chatForm.value), channelId, username }, (err) => {
       if (err) {
         updateChatForm((form) => {
           toast(t('toastify.networkErr'), {
