@@ -17,7 +17,7 @@ const runApp = async () => {
     .use(initReactI18next)
     .init({
       resources,
-      fallbackLng: 'en',
+      fallbackLng: 'ru',
     });
 
   const root = ReactDOM.createRoot(document.getElementById('chat'));

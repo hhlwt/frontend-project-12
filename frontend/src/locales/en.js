@@ -1,6 +1,6 @@
 const en = {
   translation: {
-    logOutBtn: 'LogOudt',
+    logOutBtn: 'LogOut',
     notFound: 'Page not found',
     authorization: {
       header: 'Log in',
@@ -8,7 +8,8 @@ const en = {
       submit: 'Log in',
       usernamePlaceholder: 'Username',
       passwordPlaceholder: 'Password',
-      authInvalidFeedback: 'The username or password is incorrect'
+      invalidPassUsername: 'The username or password is incorrect',
+      networkErr: 'Check your network connection',
     },
     signUp: {
       header: 'Sign up',
@@ -20,6 +21,8 @@ const en = {
       nameLength: 'Username must be 3 to 20 characters',
       passwordLength: 'Password must be at least 6 characters',
       passwordsMatch: 'Passwords must match',
+      networkErr: 'Check your network connection',
+      userExists: 'User already exists',
     },
     chat: {
       channelsHeader: 'Channels',

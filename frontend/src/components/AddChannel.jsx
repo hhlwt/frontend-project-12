@@ -6,31 +6,31 @@ const AddChannel = ({ socket, channels }) => {
   const {t} = useTranslation();
   const [modalShow, setModalShow] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const [modalState, setModalState] = useState('idle');
+  const [processState, setProcessState] = useState('idle');
   const [processError, setProcessError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setModalState('processing');
+    setProcessState('processing');
     const isThereSameChannel = channels.some(({name}) => {
       return name === inputValue;
     });
 
     if (isThereSameChannel) {
       setProcessError('nameExistsErr');
-      setModalState('failed');
+      setProcessState('failed');
     } else if (inputValue.length < 3 || inputValue.length > 20) {
       setProcessError('nameLengthErr');
-      setModalState('failed');
+      setProcessState('failed');
     } else {
       socket.timeout(5000).emit('newChannel', { name: inputValue }, (err) => {
         if (err) {
           setProcessError('networkErr');
-          setModalState('failed');
+          setProcessState('failed');
         } else {
           setModalShow(false);
           setInputValue('');
-          setModalState('idle');
+          setProcessState('idle');
         }
       });
     }
@@ -41,7 +41,7 @@ const AddChannel = ({ socket, channels }) => {
     <button type="button" onClick={() => {
       setModalShow(true)
       setInputValue('');
-      setModalState('idle');
+      setProcessState('idle');
     }} className="p-0 text-light btn">
       +
     </button>
@@ -60,21 +60,21 @@ const AddChannel = ({ socket, channels }) => {
       <Modal.Body>
         <Form onSubmit={handleSubmit} >
             <Form.Control
-              disabled={modalState === 'processing'}
+              disabled={processState === 'processing'}
               className="modal-input mb-2"
               placeholder={t('chat.addChannelModal.inputPlaceholder')}
               autoFocus
               required
               onChange={(e) => setInputValue(e.target.value)}
               value={inputValue}
-              isInvalid={modalState === 'failed'}
+              isInvalid={processState === 'failed'}
             />
             <Form.Control.Feedback type="invalid" className="ps-1">{t(`chat.modalErrors.${processError}`)}</Form.Control.Feedback>
             <div className="d-flex justify-content-end mt-3">
-              <Button disabled={modalState === 'processing'} className="me-2" onClick={() => setModalShow(false)}
+              <Button disabled={processState === 'processing'} className="me-2" onClick={() => setModalShow(false)}
                variant="dark">{t('chat.modalButtons.cancel')}</Button>
-              <Button disabled={modalState === 'processing'} type="submit" variant="dark">
-                {modalState === 'processing' ?
+              <Button disabled={processState === 'processing'} type="submit" variant="dark">
+                {processState === 'processing' ?
                 <div className="spinner-border spinner-border-sm" role="status">
                   <span className="visually-hidden">Loading...</span>
                 </div> :

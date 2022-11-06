@@ -10,7 +10,7 @@ import routes from '../../routes';
 
 const Signup = () => {
   const {t} = useTranslation();
-  const [signupFailed, setSignupFailed] = useState(false);
+  const [processError, setProcessError] = useState('');
   const navigate = useNavigate();
   const { logIn } = useAuth();
 
@@ -39,7 +39,8 @@ const Signup = () => {
         navigate('/', { replace: true });
       } catch (err){
         formik.setSubmitting(false);
-        setSignupFailed(true);
+        const currentError = err.code === 'ERR_NETWORK' ? 'networkErr' : 'userExists';
+        setProcessError(currentError);
       }
     },
   });
@@ -105,9 +106,14 @@ const Signup = () => {
                     />
                     <Form.Control.Feedback type="invalid" tooltip>{formik.errors.passwordConfirmation}</Form.Control.Feedback>
                   </Form.FloatingLabel>
-                  {signupFailed ? <div className='text-danger'>User already exists</div> : null}
+                  {processError ? t(`signUp.${processError}`) : null}
                   <div className="d-flex justify-content-end">
-                    <Button type="submit" variant="dark" className="mt-3">{t('signUp.submit')}</Button>
+                    <Button type="submit" variant="dark" className="mt-3">
+                    {formik.isSubmitting ? 
+                      <div className="spinner-border spinner-border-sm" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div> : t('signUp.submit')}
+                    </Button>
                   </div>
                 </fieldset>
               </Form>

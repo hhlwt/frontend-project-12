@@ -5,19 +5,19 @@ import { useTranslation } from 'react-i18next';
 const DeleteChannel = ({id, socket}) => {
   const {t} = useTranslation();
   const [modalShow, setModalShow] = useState(false);
-  const [modalState, setModalState] = useState('idle');
+  const [processState, setProcessState] = useState('idle');
   const [processError, setProcessError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setModalState('processing');
+    setProcessState('processing');
     socket.timeout(5000).emit('removeChannel', { id }, (err) => {
       if (err) {
         setProcessError('networkErr');
-        setModalState('failed');
+        setProcessState('failed');
       } else {
         setModalShow(false);
-        setModalState('idle');
+        setProcessState('idle');
       }
     });
   }
@@ -28,7 +28,7 @@ const DeleteChannel = ({id, socket}) => {
       const dropdownMenu = document.querySelector('.dropdown-menu.show');
       dropdownMenu.classList.remove('show');
       setModalShow(true);
-      setModalState('idle');
+      setProcessState('idle');
     }}>{t('chat.deleteChannelModal.triggerButton')}</button>
     <Modal
       show={modalShow}
@@ -44,11 +44,11 @@ const DeleteChannel = ({id, socket}) => {
       </Modal.Header>
       <Modal.Body>
         <p style={{'color':'white'}} className="mb-0">{t('chat.deleteChannelModal.body')}</p>
-        {modalState === 'failed' ? <p className="text-danger">{t(`chat.modalErrors.${processError}`)}</p> : null}
+        {processState === 'failed' ? <p className="text-danger">{t(`chat.modalErrors.${processError}`)}</p> : null}
         <div className="d-flex justify-content-end">
-          <Button disabled={modalState === 'processing'} className="me-2" onClick={() => setModalShow(false)} variant="dark">{t('chat.modalButtons.cancel')}</Button>
-          <Button disabled={modalState === 'processing'} type="submit" onClick={handleSubmit} variant="dark">
-            {modalState === 'processing' ?
+          <Button disabled={processState === 'processing'} className="me-2" onClick={() => setModalShow(false)} variant="dark">{t('chat.modalButtons.cancel')}</Button>
+          <Button disabled={processState === 'processing'} type="submit" onClick={handleSubmit} variant="dark">
+            {processState === 'processing' ?
               <div className="spinner-border spinner-border-sm" role="status">
                 <span className="visually-hidden">Loading...</span>
               </div> :

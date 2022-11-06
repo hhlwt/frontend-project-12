@@ -8,7 +8,8 @@ const ru = {
       submit: 'Войти',
       usernamePlaceholder: 'Ваш ник',
       passwordPlaceholder: 'Пароль',
-      authInvalidFeedback: 'Неверные имя пользователя или пароль'
+      invalidPassUsername: 'Неверные имя пользователя или пароль',
+      networkErr: 'Проверьте подключение к интернету',
     },
     signUp: {
       header: 'Регистрация',
@@ -20,6 +21,8 @@ const ru = {
       nameLength: 'Имя пользователя должно содержать от 3 до 20 символов',
       passwordLength: 'Пароль должен содержать минимум 6 символов',
       passwordsMatch: 'Пароли должны совпадать',
+      networkErr: 'Проверьте подключение к интернету',
+      userExists: 'Пользователь с таким именем уже сущетсвует',
     },
     chat: {
       channelsHeader: 'Каналы',

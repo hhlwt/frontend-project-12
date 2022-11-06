@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 
 const Login = () => {
-  const [authFailed, setAuthFailed] = useState(false);
+  const [processError, setProcessError] = useState('');
   const {t} = useTranslation();
   const navigate = useNavigate();
   const { logIn } = useAuth();
@@ -27,11 +27,8 @@ const Login = () => {
         navigate('/', { replace: true });
       } catch (err) { 
         formik.setSubmitting(false);
-        if (err.isAxiosError && err.response.status === 401) {
-          setAuthFailed(true);
-          return;
-        }
-        throw err;
+        const currentError = err.code === 'ERR_NETWORK' ? 'networkErr' : 'invalidPassUsername';
+        setProcessError(currentError);
       }
     },
   });
@@ -56,7 +53,7 @@ const Login = () => {
                       className='auth-input'
                       placeholder="Username"
                       name="username"
-                      isInvalid={authFailed}
+                      isInvalid={!!processError}
                       required
                       onChange={formik.handleChange}
                       value={formik.values.username}
@@ -71,16 +68,21 @@ const Login = () => {
                       className='auth-input'
                       placeholder="Password"
                       name="password"
-                      isInvalid={authFailed}
+                      isInvalid={!!processError}
                       type="password"
                       required
                       onChange={formik.handleChange}
                       value={formik.values.password}
                     />
-                    <Form.Control.Feedback type="invalid" tooltip>{t('authorization.authInvalidFeedback')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid" tooltip>{t(`authorization.${processError}`)}</Form.Control.Feedback>
                   </Form.FloatingLabel>
                   <div className="d-flex justify-content-end">
-                    <Button type="submit" variant="dark" className="mt-3">{t('authorization.submit')}</Button>
+                    <Button type="submit" variant="dark" className="mt-3">
+                      {formik.isSubmitting ? 
+                      <div className="spinner-border spinner-border-sm" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div> : t('authorization.submit')}
+                    </Button>            
                   </div>
                 </fieldset>
               </Form>
