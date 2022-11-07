@@ -36,9 +36,11 @@ const Channels = ({ socket }) => {
     (
       <Dropdown key={id} as={ButtonGroup} className="w-100">
         <Nav.Link className="text-truncate w-100" eventKey={id}># {name}</Nav.Link>
-  
-        <Dropdown.Toggle split className="toggle" id={`channel-group-${id}`} />
-  
+
+        <Dropdown.Toggle split className="toggle" id={`channel-group-${id}`}>
+          <span class="visually-hidden">Управление каналом</span>
+        </Dropdown.Toggle>
+
         <Dropdown.Menu>
           <DeleteChannel id={id} socket={socket}/>
           <RenameChannel id={id} socket={socket} channels={channels} name={name}/>
