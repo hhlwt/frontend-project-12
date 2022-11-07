@@ -1,6 +1,7 @@
-import { createSlice, createEntityAdapter, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import routes from "../routes";
+/* eslint-disable no-param-reassign */
+import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import routes from '../routes';
 
 export const fetchChannels = createAsyncThunk(
   'channels/fetchChannels',
@@ -10,7 +11,7 @@ export const fetchChannels = createAsyncThunk(
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
-  }
+  },
 );
 
 const channelsAdapter = createEntityAdapter();
@@ -35,6 +36,8 @@ const channelsSlice = createSlice({
   },
 });
 
-export const { setActiveChannel, addChannel, deleteChannel, updateChannel } = channelsSlice.actions;
+export const {
+  setActiveChannel, addChannel, deleteChannel, updateChannel,
+} = channelsSlice.actions;
 export const channelsSelectors = channelsAdapter.getSelectors((state) => state.channels);
 export default channelsSlice.reducer;

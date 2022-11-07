@@ -55,10 +55,10 @@ const en = {
       renameChannelModal: {
         triggerButton: 'Rename',
         header: 'Rename channel',
-        inputPlaceholder: 'Channel name'
-      }
-    }
-  }
+        inputPlaceholder: 'Channel name',
+      },
+    },
+  },
 };
 
 export default en;

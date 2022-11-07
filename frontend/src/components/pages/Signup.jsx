@@ -4,13 +4,13 @@ import { Form, Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import useAuth from '../../hooks/useAuth';
 import axios from 'axios';
 import * as Yup from 'yup';
+import useAuth from '../../hooks/useAuth';
 import routes from '../../routes';
 
 const Signup = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [processError, setProcessError] = useState('');
   const navigate = useNavigate();
   const { logIn } = useAuth();
@@ -38,11 +38,11 @@ const Signup = () => {
         localStorage.setItem('userId', JSON.stringify(data));
         logIn();
         navigate('/', { replace: true });
-      } catch (err){
+      } catch (err) {
         formik.setSubmitting(false);
         if (err.code === 'ERR_NETWORK') {
           toast(t('toastify.networkErr'), {
-            progressClassName: "danger-progress-bar",
+            progressClassName: 'danger-progress-bar',
           });
           return;
         }
@@ -68,7 +68,7 @@ const Signup = () => {
                     className="mb-4"
                   >
                     <Form.Control
-                      className='auth-input'
+                      className="auth-input"
                       placeholder="Username"
                       name="username"
                       isInvalid={formik.touched.username && formik.errors.username}
@@ -84,7 +84,7 @@ const Signup = () => {
                     className="mb-4"
                   >
                     <Form.Control
-                      className='auth-input'
+                      className="auth-input"
                       placeholder="Password"
                       name="password"
                       type="password"
@@ -101,11 +101,12 @@ const Signup = () => {
                     className="mb-2"
                   >
                     <Form.Control
-                      className='auth-input'
+                      className="auth-input"
                       placeholder="passwordConfirmation"
                       name="passwordConfirmation"
                       type="password"
-                      isInvalid={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
+                      isInvalid={formik.touched.passwordConfirmation
+                         && formik.errors.passwordConfirmation}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.passwordConfirmation}
@@ -115,10 +116,12 @@ const Signup = () => {
                   {processError ? <div className="text-danger">{t(`signUp.${processError}`)}</div> : null}
                   <div className="d-flex justify-content-end">
                     <Button type="submit" variant="dark" className="mt-3">
-                    {formik.isSubmitting ? 
-                      <div className="spinner-border spinner-border-sm" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                      </div> : t('signUp.submit')}
+                      {formik.isSubmitting
+                        ? (
+                          <div className="spinner-border spinner-border-sm" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                          </div>
+                        ) : t('signUp.submit')}
                     </Button>
                   </div>
                 </fieldset>

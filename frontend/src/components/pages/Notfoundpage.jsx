@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 const Notfoundpage = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div className="text-center mt-5 text-light">

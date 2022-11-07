@@ -10,7 +10,7 @@ const ru = {
       // deleteChannelFulfilled: '☠ Канал удален!',
       deleteChannelFulfilled: 'Канал удалён',
       // networkErr: '📡 Проверьте подключение к интернету',
-      networkErr: 'Ошибка соединения'
+      networkErr: 'Ошибка соединения',
     },
     authorization: {
       header: 'Войти',
@@ -64,10 +64,10 @@ const ru = {
       renameChannelModal: {
         triggerButton: 'Переименовать',
         header: 'Переименовать канал',
-        inputPlaceholder: 'Имя канала'
-      }
-    }
-  }
+        inputPlaceholder: 'Имя канала',
+      },
+    },
+  },
 };
 
 export default ru;

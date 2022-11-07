@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { Form, Button, Card } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
 import axios from 'axios';
-import routes from '../../routes';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-
+import routes from '../../routes';
+import useAuth from '../../hooks/useAuth';
 
 const Login = () => {
   const [processError, setProcessError] = useState('');
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { logIn } = useAuth();
 
@@ -26,11 +25,11 @@ const Login = () => {
         localStorage.setItem('userId', JSON.stringify(data));
         logIn();
         navigate('/', { replace: true });
-      } catch (err) { 
+      } catch (err) {
         formik.setSubmitting(false);
         if (err.code === 'ERR_NETWORK') {
           toast(t('toastify.networkErr'), {
-            progressClassName: "danger-progress-bar",
+            progressClassName: 'danger-progress-bar',
           });
           return;
         }
@@ -56,7 +55,7 @@ const Login = () => {
                     className="mb-3"
                   >
                     <Form.Control
-                      className='auth-input'
+                      className="auth-input"
                       placeholder="Username"
                       name="username"
                       isInvalid={!!processError}
@@ -70,8 +69,8 @@ const Login = () => {
                     label={t('authorization.passwordPlaceholder')}
                     className="mb-3"
                   >
-                    <Form.Control 
-                      className='auth-input'
+                    <Form.Control
+                      className="auth-input"
                       placeholder="Password"
                       name="password"
                       isInvalid={!!processError}
@@ -84,18 +83,20 @@ const Login = () => {
                   </Form.FloatingLabel>
                   <div className="d-flex justify-content-end">
                     <Button type="submit" variant="dark" className="mt-3">
-                      {formik.isSubmitting ? 
-                      <div className="spinner-border spinner-border-sm" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                      </div> : t('authorization.submit')}
-                    </Button>            
+                      {formik.isSubmitting
+                        ? (
+                          <div className="spinner-border spinner-border-sm" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                          </div>
+                        ) : t('authorization.submit')}
+                    </Button>
                   </div>
                 </fieldset>
               </Form>
             </Card.Body>
             <Card.Footer className="p-4">
               <div className="text-center">
-                <Link to='/signup'>{t('authorization.footer')}</Link>
+                <Link to="/signup">{t('authorization.footer')}</Link>
               </div>
             </Card.Footer>
           </Card>
