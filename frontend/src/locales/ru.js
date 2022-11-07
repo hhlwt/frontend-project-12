@@ -50,6 +50,7 @@ const ru = {
       modalButtons: {
         cancel: 'Отменить',
         submit: 'Отправить',
+        delete: 'Удалить',
       },
       addChannelModal: {
         header: 'Добавить канал',

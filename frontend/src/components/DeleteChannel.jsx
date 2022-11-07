@@ -52,12 +52,12 @@ const DeleteChannel = ({id, socket}) => {
         <p style={{'color':'white'}} className="mb-0">{t('chat.deleteChannelModal.body')}</p>
         <div className="d-flex justify-content-end">
           <Button disabled={processState === 'processing'} className="me-2" onClick={() => setModalShow(false)} variant="dark">{t('chat.modalButtons.cancel')}</Button>
-          <Button disabled={processState === 'processing'} type="submit" onClick={handleSubmit} variant="dark">
+          <Button disabled={processState === 'processing'} type="submit" onClick={handleSubmit} variant="danger">
             {processState === 'processing' ?
               <div className="spinner-border spinner-border-sm" role="status">
                 <span className="visually-hidden">Loading...</span>
               </div> :
-            t('chat.modalButtons.submit')}
+            t('chat.modalButtons.delete')}
           </Button>
         </div>
       </Modal.Body>
