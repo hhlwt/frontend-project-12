@@ -68,7 +68,6 @@ const AddChannel = ({ socket, channels }) => {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-            <Form.Label className="visually-hidden">Имя канала</Form.Label>
             <Form.Control
               disabled={processState === 'processing'}
               className="modal-input mb-2"
@@ -80,6 +79,7 @@ const AddChannel = ({ socket, channels }) => {
               value={inputValue}
               isInvalid={processState === 'failed'}
             />
+            <Form.Label className="visually-hidden" htmlFor="name">Имя канала</Form.Label>
             <Form.Control.Feedback type="invalid" className="ps-1">{t(`chat.modalErrors.${processError}`)}</Form.Control.Feedback>
             <div className="d-flex justify-content-end mt-3">
               <Button

@@ -79,7 +79,6 @@ const RenameChannel = ({
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-            <Form.Label className="visually-hidden">Имя канала</Form.Label>
             <Form.Control
               disabled={processState === 'processing'}
               className="modal-input mb-2"
@@ -92,6 +91,7 @@ const RenameChannel = ({
               isInvalid={processState === 'failed'}
               ref={inputEl}
             />
+            <Form.Label className="visually-hidden" htmlFor="name">Имя канала</Form.Label>
             <Form.Control.Feedback type="invalid" className="ps-1">{t(`chat.modalErrors.${processError}`)}</Form.Control.Feedback>
             <div className="d-flex justify-content-end mt-3">
               <Button disabled={processState === 'processing'} className="me-2" onClick={() => setModalShow(false)} variant="dark">{t('chat.modalButtons.cancel')}</Button>
