@@ -33,7 +33,7 @@ const ChatForm = ({ socket }) => {
             progressClassName: "danger-progress-bar",
           });
           form.state = 'idle';
-        })
+        });
       } else {
         updateChatForm((form) => {
           form.state = 'idle';
