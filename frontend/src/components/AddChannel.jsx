@@ -71,11 +71,13 @@ const AddChannel = ({ socket, channels }) => {
               className="modal-input mb-2"
               placeholder={t('chat.addChannelModal.inputPlaceholder')}
               autoFocus
+              id="name"
               required
               onChange={(e) => setInputValue(e.target.value)}
               value={inputValue}
               isInvalid={processState === 'failed'}
             />
+            <label class="visually-hidden" for="name">Имя канала</label>
             <Form.Control.Feedback type="invalid" className="ps-1">{t(`chat.modalErrors.${processError}`)}</Form.Control.Feedback>
             <div className="d-flex justify-content-end mt-3">
               <Button disabled={processState === 'processing'} className="me-2" onClick={() => setModalShow(false)}

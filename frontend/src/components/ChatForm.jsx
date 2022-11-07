@@ -51,7 +51,7 @@ const ChatForm = ({ socket }) => {
             disabled={chatForm.state === 'processing'}
             ref={inputEl}
             id="chat-input"
-            aria-label="New message" 
+            aria-label="Новое сообщение" 
             placeholder={t('chat.inputPlaceholder')}
             className="border-0 p-0 ps-2 form-control"
             value={chatForm.value}

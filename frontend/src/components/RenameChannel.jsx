@@ -78,11 +78,13 @@ const RenameChannel = ({id, socket, channels, name}) => {
               placeholder={t('chat.renameChannelModal.inputPlaceholder')}
               autoFocus
               required
+              id="name"
               onChange={(e) => setInputValue(e.target.value)}
               value={inputValue}
               isInvalid={processState === 'failed'}
               ref={inputEl}
             />
+            <label class="visually-hidden" for="name">Имя канала</label>
             <Form.Control.Feedback type="invalid" className="ps-1">{t(`chat.modalErrors.${processError}`)}</Form.Control.Feedback>
             <div className="d-flex justify-content-end mt-3">
               <Button disabled={processState === 'processing'} className="me-2" onClick={() => setModalShow(false)} variant="dark">{t('chat.modalButtons.cancel')}</Button>
