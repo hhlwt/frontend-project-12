@@ -3,4 +3,4 @@
 
 
 <h1>Demo:</h1>
-<a href="https://secret-fjord-71842.herokuapp.com/">React Chat App</a>
+<a href="https://frontend-project-12-production-a53d.up.railway.app/">React Chat App</a>
