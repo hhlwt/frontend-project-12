@@ -6,12 +6,14 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import * as Yup from 'yup';
+import { useRollbar } from '@rollbar/react';
 import useAuth from '../../hooks/useAuth';
 import routes from '../../routes';
 
 const Signup = () => {
   const { t } = useTranslation();
   const [processError, setProcessError] = useState('');
+  const rollbar = useRollbar();
   const navigate = useNavigate();
   const { logIn } = useAuth();
 
@@ -39,6 +41,7 @@ const Signup = () => {
         logIn();
         navigate('/', { replace: true });
       } catch (err) {
+        rollbar.error(err);
         formik.setSubmitting(false);
         if (err.code === 'ERR_NETWORK') {
           toast(t('toastify.networkErr'), {

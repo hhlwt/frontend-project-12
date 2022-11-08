@@ -42,6 +42,7 @@ const en = {
       modalButtons: {
         cancel: 'Cancel',
         submit: 'Submit',
+        delete: 'Delete',
       },
       addChannelModal: {
         header: 'Add channel',

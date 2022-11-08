@@ -13,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
 
 const rollbarConfig = {
-  accessToken: 'c92f6490319e4c65b92d5f205e63985b',
+  accessToken: process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
   captureUncaught: true,
   captureUnhandledRejections: true,
 };
