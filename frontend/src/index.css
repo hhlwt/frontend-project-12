@@ -58,6 +58,14 @@ a:hover {
 
 
 
+/* Not found page */
+.homeLink {
+  font-style: italic;
+  text-decoration: underline;
+}
+
+/* ******************************************************************* */
+
 /* Authorization form */
 .auth-backplate {
   background-color: rgba(88, 88, 88, 0.4);

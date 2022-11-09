@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { fetchMessages, messagesSelectors, addMessage } from '../slices/messagesSlice';
-import { channelsSelectors } from '../slices/channelsSlice';
+import { messagesSelectors } from '../../../slices/messagesSlice';
+import { channelsSelectors } from '../../../slices/channelsSlice';
 
-const Messages = ({ socket }) => {
+const Messages = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const messages = useSelector(messagesSelectors.selectAll);
   const currentChannelId = useSelector((state) => state.channels.activeChannel);
   const activeChannel = useSelector((state) => channelsSelectors.selectById(
@@ -19,6 +18,7 @@ const Messages = ({ socket }) => {
     <div key={id} className="text-break mb-2">
       <b>{username}</b>
       :
+      {' '}
       {body}
     </div>
   ));
@@ -31,14 +31,6 @@ const Messages = ({ socket }) => {
   useEffect(() => {
     scrollToBottom();
   }, [currentChannelId, messages]);
-
-  useEffect(() => {
-    dispatch(fetchMessages());
-  }, [dispatch]);
-
-  socket.on('newMessage', (message) => {
-    dispatch(addMessage(message));
-  });
 
   return (
     <>

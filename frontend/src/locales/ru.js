@@ -2,6 +2,7 @@ const ru = {
   translation: {
     logOutBtn: 'Выйти',
     notFound: 'Страница не найдена',
+    notFoundToHomeLink: 'Но вы можете перейти <1>на главную</1>',
     toastify: {
       // addChannelFulfilled: '🤠 Новый канал создан!',
       addChannelFulfilled: 'Канал создан',
@@ -22,6 +23,7 @@ const ru = {
     },
     signUp: {
       header: 'Регистрация',
+      footer: 'Войти',
       usernamePlaceholder: 'Имя пользователя',
       passwordPlaceholder: 'Пароль',
       passwordConfirmationPlaceholder: 'Подтвердите пароль',

@@ -3,35 +3,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonGroup, Nav, Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import {
-  fetchChannels, channelsSelectors, setActiveChannel, addChannel, deleteChannel, updateChannel,
-} from '../slices/channelsSlice';
+  fetchChannels, channelsSelectors, setActiveChannel,
+} from '../../../slices/channelsSlice';
 import AddChannel from './AddChannel';
 import DeleteChannel from './DeleteChannel';
 import RenameChannel from './RenameChannel';
+import useAuth from '../../../hooks/useAuth';
 
 const Channels = ({ socket }) => {
+  const { userToken } = useAuth();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const channels = useSelector(channelsSelectors.selectAll);
   const currentChannelId = useSelector((state) => state.channels.activeChannel);
 
-  socket.on('newChannel', (channel) => {
-    dispatch(addChannel(channel));
-    dispatch(setActiveChannel(channel.id));
-  });
-
-  socket.on('renameChannel', ({ id, name }) => {
-    dispatch(updateChannel({ id, changes: { name } }));
-  });
-
-  socket.on('removeChannel', ({ id }) => {
-    dispatch(deleteChannel(id));
-    dispatch(setActiveChannel(1));
-  });
-
   useEffect(() => {
-    dispatch(fetchChannels());
-  }, [dispatch]);
+    dispatch(fetchChannels(userToken));
+  }, [dispatch, userToken]);
 
   const channelsNavs = channels.map(({ name, id, removable }) => (removable
     ? (

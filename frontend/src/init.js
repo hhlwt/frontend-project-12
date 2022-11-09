@@ -5,6 +5,7 @@ import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider as StoreProvider } from 'react-redux';
 import { Provider, ErrorBoundary } from '@rollbar/react';
+import io from 'socket.io-client';
 import { store } from './slices/index.js';
 import resources from './locales/index.js';
 import App from './components/App.jsx';
@@ -20,6 +21,7 @@ const rollbarConfig = {
 
 const runApp = async () => {
   const i18n = i18next.createInstance();
+  const socket = io.connect();
 
   await i18n
     .use(initReactI18next)
@@ -36,7 +38,7 @@ const runApp = async () => {
           <AuthProvider>
             <Provider config={rollbarConfig}>
               <ErrorBoundary>
-                <App />
+                <App socket={socket} />
               </ErrorBoundary>
             </Provider>
           </AuthProvider>

@@ -1,47 +1,35 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { Form, Button, Card } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import axios from 'axios';
-import * as Yup from 'yup';
 import { useRollbar } from '@rollbar/react';
-import useAuth from '../../hooks/useAuth';
 import routes from '../../routes';
+import useAuth from '../../hooks/useAuth';
 
-const Signup = () => {
-  const { t } = useTranslation();
+const Login = () => {
   const [processError, setProcessError] = useState('');
   const rollbar = useRollbar();
+  const { t } = useTranslation();
+  const { logIn, setUserToken } = useAuth();
   const navigate = useNavigate();
-  const { logIn } = useAuth();
 
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
-      passwordConfirmation: '',
     },
-    validationSchema: Yup.object({
-      username: Yup.string()
-        .min(3, t('signUp.nameLength'))
-        .max(20, t('signUp.nameLength'))
-        .required(t('signUp.fieldIsRequired')),
-      password: Yup.string()
-        .min(6, t('signUp.passwordLength'))
-        .required(t('signUp.fieldIsRequired')),
-      passwordConfirmation: Yup.string()
-        .oneOf([Yup.ref('password')], t('signUp.passwordsMatch')),
-    }),
-    onSubmit: async ({ username, password }) => {
+    onSubmit: async (values) => {
       try {
-        const { data } = await axios.post(routes.signupPath(), { username, password });
+        const { data } = await axios.post(routes.loginPath(), values);
+        setUserToken(data.token);
         localStorage.setItem('userId', JSON.stringify(data));
         logIn();
         navigate('/', { replace: true });
       } catch (err) {
-        rollbar.error(err);
+        rollbar.error('Login error', err);
         formik.setSubmitting(false);
         if (err.code === 'ERR_NETWORK') {
           toast(t('toastify.networkErr'), {
@@ -49,7 +37,7 @@ const Signup = () => {
           });
           return;
         }
-        setProcessError('userExists');
+        setProcessError('invalidPassUsername');
       }
     },
   });
@@ -62,61 +50,41 @@ const Signup = () => {
             <Card.Body className="row p-5">
               <Form onSubmit={formik.handleSubmit} className="p-4">
                 <div className="text-center">
-                  <h1 className="auth-header">{t('signUp.header')}</h1>
+                  <h1 className="auth-header">{t('authorization.header')}</h1>
                 </div>
                 <fieldset disabled={formik.isSubmitting}>
                   <Form.FloatingLabel
                     controlId="username"
-                    label={t('signUp.usernamePlaceholder')}
-                    className="mb-4"
+                    label={t('authorization.usernamePlaceholder')}
+                    className="mb-3"
                   >
                     <Form.Control
                       className="auth-input"
                       placeholder="Username"
                       name="username"
-                      isInvalid={formik.touched.username && formik.errors.username}
+                      isInvalid={!!processError}
+                      required
                       onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
                       value={formik.values.username}
                     />
-                    <Form.Control.Feedback type="invalid" tooltip>{formik.errors.username}</Form.Control.Feedback>
                   </Form.FloatingLabel>
                   <Form.FloatingLabel
                     controlId="password"
-                    label={t('signUp.passwordPlaceholder')}
-                    className="mb-4"
+                    label={t('authorization.passwordPlaceholder')}
+                    className="mb-3"
                   >
                     <Form.Control
                       className="auth-input"
                       placeholder="Password"
                       name="password"
+                      isInvalid={!!processError}
                       type="password"
-                      isInvalid={formik.touched.password && formik.errors.password}
+                      required
                       onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
                       value={formik.values.password}
                     />
-                    <Form.Control.Feedback type="invalid" tooltip>{formik.errors.password}</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid" tooltip>{t(`authorization.${processError}`)}</Form.Control.Feedback>
                   </Form.FloatingLabel>
-                  <Form.FloatingLabel
-                    controlId="passwordConfirmation"
-                    label={t('signUp.passwordConfirmationPlaceholder')}
-                    className="mb-2"
-                  >
-                    <Form.Control
-                      className="auth-input"
-                      placeholder="passwordConfirmation"
-                      name="passwordConfirmation"
-                      type="password"
-                      isInvalid={formik.touched.passwordConfirmation
-                         && formik.errors.passwordConfirmation}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.passwordConfirmation}
-                    />
-                    <Form.Control.Feedback type="invalid" tooltip>{formik.errors.passwordConfirmation}</Form.Control.Feedback>
-                  </Form.FloatingLabel>
-                  {processError ? <div className="text-danger">{t(`signUp.${processError}`)}</div> : null}
                   <div className="d-flex justify-content-end">
                     <Button type="submit" variant="dark" className="mt-3">
                       {formik.isSubmitting
@@ -124,12 +92,17 @@ const Signup = () => {
                           <div className="spinner-border spinner-border-sm" role="status">
                             <span className="visually-hidden">Loading...</span>
                           </div>
-                        ) : t('signUp.submit')}
+                        ) : t('authorization.submit')}
                     </Button>
                   </div>
                 </fieldset>
               </Form>
             </Card.Body>
+            <Card.Footer className="p-4">
+              <div className="text-center">
+                <Link to="/signup">{t('authorization.footer')}</Link>
+              </div>
+            </Card.Footer>
           </Card>
         </div>
       </div>
@@ -137,4 +110,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;

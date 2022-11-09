@@ -2,6 +2,7 @@ const en = {
   translation: {
     logOutBtn: 'LogOut',
     notFound: 'Page not found',
+    notFoundToHomeLink: 'But you can go <1>to the home page</1>',
     toastify: {
       addChannelFulfilled: '🤠 A new channel has been added!',
       deleteChannelFulfilled: '☠ The channel has been deleted!',
@@ -18,6 +19,7 @@ const en = {
     },
     signUp: {
       header: 'Sign up',
+      footer: 'Log in',
       usernamePlaceholder: 'Username',
       passwordPlaceholder: 'Password',
       passwordConfirmationPlaceholder: 'Password confirmation',

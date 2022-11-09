@@ -5,10 +5,9 @@ import routes from '../routes';
 
 export const fetchChannels = createAsyncThunk(
   'channels/fetchChannels',
-  async () => {
-    const { token } = JSON.parse(localStorage.getItem('userId'));
+  async (userToken) => {
     const response = await axios.get(routes.dataPath(), {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${userToken}` },
     });
     return response.data;
   },
@@ -23,8 +22,16 @@ const channelsSlice = createSlice({
     setActiveChannel(state, { payload }) {
       state.activeChannel = payload;
     },
-    addChannel: channelsAdapter.addOne,
-    deleteChannel: channelsAdapter.removeOne,
+    addChannel(state, { payload }) {
+      channelsAdapter.addOne(state, payload);
+      state.activeChannel = payload.id;
+    },
+    deleteChannel(state, { payload }) {
+      channelsAdapter.removeOne(state, payload);
+      if (state.activeChannel === payload) {
+        state.activeChannel = 1;
+      }
+    },
     updateChannel: channelsAdapter.updateOne,
   },
   extraReducers: (builder) => {
