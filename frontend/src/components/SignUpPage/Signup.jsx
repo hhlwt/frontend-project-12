@@ -15,7 +15,7 @@ const Signup = () => {
   const [processError, setProcessError] = useState('');
   const rollbar = useRollbar();
   const navigate = useNavigate();
-  const { logIn } = useAuth();
+  const { logIn, setUserData } = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -37,6 +37,7 @@ const Signup = () => {
     onSubmit: async ({ username, password }) => {
       try {
         const { data } = await axios.post(routes.signupPath(), { username, password });
+        setUserData(data);
         localStorage.setItem('userId', JSON.stringify(data));
         logIn();
         navigate('/', { replace: true });

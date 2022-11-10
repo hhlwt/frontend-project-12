@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { messagesSelectors } from '../../../slices/messagesSlice';
-import { channelsSelectors } from '../../../slices/channelsSlice';
+import { channelsSelectors, selectActiveChannel } from '../../../slices/channelsSlice';
 
 const Messages = () => {
   const { t } = useTranslation();
   const messages = useSelector(messagesSelectors.selectAll);
-  const currentChannelId = useSelector((state) => state.channels.activeChannel);
+  const currentChannelId = useSelector(selectActiveChannel);
   const activeChannel = useSelector((state) => channelsSelectors.selectById(
     state,
     currentChannelId,

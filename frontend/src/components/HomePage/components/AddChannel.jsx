@@ -2,13 +2,32 @@ import React, { useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { useSocketIo } from '../../../hooks/useSocketIo';
 
-const AddChannel = ({ socket, channels }) => {
+const AddChannel = ({ channels }) => {
   const { t } = useTranslation();
   const [modalShow, setModalShow] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [processState, setProcessState] = useState('idle');
   const [processError, setProcessError] = useState('');
+  const { emitAddChannel } = useSocketIo();
+
+  const handleSuccessEmit = () => {
+    setModalShow(false);
+    setInputValue('');
+    setProcessState('idle');
+    toast(t('toastify.addChannelFulfilled'), {
+      progressClassName: 'success-progress-bar',
+    });
+  };
+
+  const handleFailedEmit = () => {
+    toast(t('toastify.networkErr'), {
+      progressClassName: 'danger-progress-bar',
+      className: 'glowing-alert',
+    });
+    setProcessState('idle');
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,22 +41,7 @@ const AddChannel = ({ socket, channels }) => {
       setProcessError('nameLengthErr');
       setProcessState('failed');
     } else {
-      socket.timeout(5000).emit('newChannel', { name: inputValue }, (err) => {
-        if (err) {
-          toast(t('toastify.networkErr'), {
-            progressClassName: 'danger-progress-bar',
-            className: 'glowing-alert',
-          });
-          setProcessState('idle');
-        } else {
-          setModalShow(false);
-          setInputValue('');
-          setProcessState('idle');
-          toast(t('toastify.addChannelFulfilled'), {
-            progressClassName: 'success-progress-bar',
-          });
-        }
-      });
+      emitAddChannel({ name: inputValue }, handleSuccessEmit, handleFailedEmit);
     }
   };
 

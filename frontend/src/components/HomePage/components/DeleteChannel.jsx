@@ -2,30 +2,34 @@ import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { useSocketIo } from '../../../hooks/useSocketIo';
 
-const DeleteChannel = ({ id, socket }) => {
+const DeleteChannel = ({ id }) => {
   const { t } = useTranslation();
   const [modalShow, setModalShow] = useState(false);
   const [processState, setProcessState] = useState('idle');
+  const { emitDeleteChannel } = useSocketIo();
+
+  const handleSuccessEmit = () => {
+    setModalShow(false);
+    setProcessState('idle');
+    toast(t('toastify.deleteChannelFulfilled'), {
+      progressClassName: 'danger-progress-bar',
+    });
+  };
+
+  const handleFailedEmit = () => {
+    toast(t('toastify.networkErr'), {
+      progressClassName: 'danger-progress-bar',
+      className: 'glowing-alert',
+    });
+    setProcessState('idle');
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setProcessState('processing');
-    socket.timeout(5000).emit('removeChannel', { id }, (err) => {
-      if (err) {
-        toast(t('toastify.networkErr'), {
-          progressClassName: 'danger-progress-bar',
-          className: 'glowing-alert',
-        });
-        setProcessState('idle');
-      } else {
-        setModalShow(false);
-        setProcessState('idle');
-        toast(t('toastify.deleteChannelFulfilled'), {
-          progressClassName: 'danger-progress-bar',
-        });
-      }
-    });
+    emitDeleteChannel({ id }, handleSuccessEmit, handleFailedEmit);
   };
 
   return (

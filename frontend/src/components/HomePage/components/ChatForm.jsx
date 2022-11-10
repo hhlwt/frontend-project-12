@@ -1,47 +1,47 @@
-/* eslint-disable no-param-reassign */
-import React, { useRef, useEffect } from 'react';
-import { useImmer } from 'use-immer';
+/* eslint-disable global-require */
+import React, { useRef, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { useSocketIo } from '../../../hooks/useSocketIo';
+import useAuth from '../../../hooks/useAuth';
+import { selectActiveChannel } from '../../../slices/channelsSlice';
 
-const ChatForm = ({ socket }) => {
-  // eslint-disable-next-line global-require
+const ChatForm = () => {
   const filter = require('leo-profanity');
   filter.add(filter.getDictionary('ru'));
   const { t } = useTranslation();
-  const [chatForm, updateChatForm] = useImmer({
-    state: 'idle',
-    value: '',
-  });
+  const { emitNewMessage } = useSocketIo();
+  const { userData: { username } } = useAuth();
+  const [chatFormState, setChatFormState] = useState('idle');
+  const [chatFormValue, setChatFormValue] = useState('');
   const inputEl = useRef(null);
-  const channelId = useSelector((state) => state.channels.activeChannel);
-  const { username } = JSON.parse(localStorage.getItem('userId'));
+  const channelId = useSelector(selectActiveChannel);
 
   useEffect(() => {
     inputEl.current.focus();
   });
 
+  const handleSuccessEmit = () => {
+    setChatFormValue('');
+    setChatFormState('idle');
+  };
+
+  const handleFailedEmit = () => {
+    toast(t('toastify.networkErr'), {
+      progressClassName: 'danger-progress-bar',
+    });
+    setChatFormState('idle');
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateChatForm((form) => {
-      form.state = 'processing';
-    });
-    socket.timeout(5000).emit('newMessage', { body: filter.clean(chatForm.value), channelId, username }, (err) => {
-      if (err) {
-        updateChatForm((form) => {
-          toast(t('toastify.networkErr'), {
-            progressClassName: 'danger-progress-bar',
-          });
-          form.state = 'idle';
-        });
-      } else {
-        updateChatForm((form) => {
-          form.state = 'idle';
-          form.value = '';
-        });
-      }
-    });
+    setChatFormState('processing');
+    emitNewMessage(
+      { body: filter.clean(chatFormValue), channelId, username },
+      handleSuccessEmit,
+      handleFailedEmit,
+    );
   };
 
   return (
@@ -50,23 +50,21 @@ const ChatForm = ({ socket }) => {
         <div className="input-group has-validation">
           <input
             name="body"
-            disabled={chatForm.state === 'processing'}
+            disabled={chatFormState === 'processing'}
             ref={inputEl}
             id="chat-input"
             aria-label="Новое сообщение"
             placeholder={t('chat.inputPlaceholder')}
             className="border-0 p-0 ps-2 form-control"
-            value={chatForm.value}
-            onChange={(e) => updateChatForm((form) => {
-              form.value = e.target.value;
-            })}
+            value={chatFormValue}
+            onChange={(e) => setChatFormValue(e.target.value)}
           />
           <button
             type="submit"
             className="btn btn-dark btn-submit-message"
-            disabled={!chatForm.value.length || chatForm.state === 'processing'}
+            disabled={!chatFormValue.trim().length || chatFormState === 'processing'}
           >
-            {chatForm.state === 'processing'
+            {chatFormState === 'processing'
               ? (
                 <div className="spinner-border spinner-border-sm" role="status">
                   <span className="visually-hidden">Loading...</span>
