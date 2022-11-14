@@ -7,7 +7,7 @@ const LogOutButton = () => {
   const { t } = useTranslation();
   const auth = useAuth();
 
-  return auth.loggedIn ? <Button onClick={auth.logOut} className="logOut-btn" variant="secondary-outline">{t('logOutBtn')}</Button> : null;
+  return auth.userData ? <Button onClick={auth.logOut} className="logOut-btn" variant="secondary-outline">{t('logOutBtn')}</Button> : null;
 };
 
 export default LogOutButton;

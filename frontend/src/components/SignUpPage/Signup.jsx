@@ -15,7 +15,7 @@ const Signup = () => {
   const [processError, setProcessError] = useState('');
   const rollbar = useRollbar();
   const navigate = useNavigate();
-  const { logIn, setUserData } = useAuth();
+  const { logIn } = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -25,21 +25,19 @@ const Signup = () => {
     },
     validationSchema: Yup.object({
       username: Yup.string()
-        .min(3, t('signUp.nameLength'))
-        .max(20, t('signUp.nameLength'))
-        .required(t('signUp.fieldIsRequired')),
+        .min(3, 'nameLength')
+        .max(20, 'nameLength')
+        .required('fieldIsRequired'),
       password: Yup.string()
-        .min(6, t('signUp.passwordLength'))
-        .required(t('signUp.fieldIsRequired')),
+        .min(6, 'passwordLength')
+        .required('fieldIsRequired'),
       passwordConfirmation: Yup.string()
-        .oneOf([Yup.ref('password')], t('signUp.passwordsMatch')),
+        .oneOf([Yup.ref('password')], 'passwordsMatch'),
     }),
     onSubmit: async ({ username, password }) => {
       try {
         const { data } = await axios.post(routes.signupPath(), { username, password });
-        setUserData(data);
-        localStorage.setItem('userId', JSON.stringify(data));
-        logIn();
+        logIn(data);
         navigate('/', { replace: true });
       } catch (err) {
         rollbar.error('SignUp error', err);
@@ -80,7 +78,7 @@ const Signup = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.username}
                     />
-                    <Form.Control.Feedback type="invalid" tooltip>{formik.errors.username}</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid" tooltip>{t(`signUp.${formik.errors.username}`)}</Form.Control.Feedback>
                   </Form.FloatingLabel>
                   <Form.FloatingLabel
                     controlId="password"
@@ -97,7 +95,7 @@ const Signup = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
                     />
-                    <Form.Control.Feedback type="invalid" tooltip>{formik.errors.password}</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid" tooltip>{t(`signUp.${formik.errors.password}`)}</Form.Control.Feedback>
                   </Form.FloatingLabel>
                   <Form.FloatingLabel
                     controlId="passwordConfirmation"
@@ -115,7 +113,7 @@ const Signup = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.passwordConfirmation}
                     />
-                    <Form.Control.Feedback type="invalid" tooltip>{formik.errors.passwordConfirmation}</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid" tooltip>{t(`signUp.${formik.errors.passwordConfirmation}`)}</Form.Control.Feedback>
                   </Form.FloatingLabel>
                   {processError ? <div className="text-danger">{t(`signUp.${processError}`)}</div> : null}
                   <div className="d-flex justify-content-end">
