@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 import {
   fetchChannels, channelsSelectors, setActiveChannel, selectActiveChannel,
 } from '../../../slices/channelsSlice';
-import AddChannel from './AddChannel';
-import DeleteChannel from './DeleteChannel';
-import RenameChannel from './RenameChannel';
+import AddChannelButton from './AddChannelButton';
+import DeleteChannelButton from './DeleteChannelButton';
+import RenameChannelButton from './RenameChannelButton';
 import useAuth from '../../../hooks/useAuth';
 
 const Channels = () => {
@@ -34,8 +34,8 @@ const Channels = () => {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          <DeleteChannel id={id} />
-          <RenameChannel id={id} channels={channels} name={name} />
+          <DeleteChannelButton id={id} />
+          <RenameChannelButton id={id} channels={channels} name={name} />
         </Dropdown.Menu>
       </Dropdown>
     )
@@ -52,7 +52,7 @@ const Channels = () => {
     <>
       <div className="d-flex justify-content-between mb-3 ps-2 pe-2">
         <span>{t('chat.channelsHeader')}</span>
-        <AddChannel channels={channels} />
+        <AddChannelButton channels={channels} />
       </div>
       <Nav
         activeKey={currentChannelId}
