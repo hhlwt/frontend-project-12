@@ -1,6 +1,9 @@
-import React, { createContext, useState } from 'react';
+import React, {
+  createContext, useState, useContext, useMemo,
+} from 'react';
 
 export const AuthContext = createContext(null);
+export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }) => {
   const data = JSON.parse(localStorage.getItem('userId'));
@@ -15,12 +18,12 @@ const AuthProvider = ({ children }) => {
     setUserData(null);
   };
 
+  const authProviderValue = useMemo(() => ({
+    logIn, logOut, userData, setUserData,
+  }), [userData]);
+
   return (
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <AuthContext.Provider value={{
-      logIn, logOut, userData, setUserData,
-    }}
-    >
+    <AuthContext.Provider value={authProviderValue}>
       {children}
     </AuthContext.Provider>
   );

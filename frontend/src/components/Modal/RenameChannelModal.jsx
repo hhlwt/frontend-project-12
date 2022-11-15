@@ -1,24 +1,25 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useRef, useEffect } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
-import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useSocketIo } from '../../../hooks/useSocketIo';
+import { useSocketIo } from '../../hooks/useSocketIo';
 
-const AddChannelModal = ({ modalProps: { channels }, onHide, modalShow }) => {
-  const { emitAddChannel } = useSocketIo();
+const RenameChannelModal = ({ modalProps: { channels, id, name }, onHide, modalShow }) => {
   const { t } = useTranslation();
+  const { renameChannel } = useSocketIo();
+  const inputEl = useRef();
 
-  const handleSuccessEmit = (formikCb) => () => {
+  const handleSuccessSubmit = (formikCb) => () => {
     onHide();
     formikCb();
-    toast(t('toastify.addChannelFulfilled'), {
-      progressClassName: 'success-progress-bar',
+    toast(t('toastify.renameChannelFulfilled'), {
+      progressClassName: 'info-progress-bar',
     });
   };
 
-  const handleFailedEmit = (formikCb) => () => {
+  const handleFailedSubmit = (formikCb) => () => {
     formikCb();
     toast(t('toastify.networkErr'), {
       progressClassName: 'danger-progress-bar',
@@ -28,7 +29,7 @@ const AddChannelModal = ({ modalProps: { channels }, onHide, modalShow }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: '',
+      name,
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -39,13 +40,19 @@ const AddChannelModal = ({ modalProps: { channels }, onHide, modalShow }) => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      emitAddChannel(
-        { name: values.name },
-        handleSuccessEmit(() => formik.setSubmitting(false)),
-        handleFailedEmit(() => formik.setSubmitting(false)),
+      renameChannel(
+        { id, name: values.name },
+        handleSuccessSubmit(() => formik.setSubmitting(false)),
+        handleFailedSubmit(() => formik.setSubmitting(false)),
       );
     },
   });
+
+  useEffect(() => {
+    if (modalShow) {
+      inputEl.current.select();
+    }
+  }, [modalShow]);
 
   return (
     <Modal
@@ -57,7 +64,7 @@ const AddChannelModal = ({ modalProps: { channels }, onHide, modalShow }) => {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter" className="text-light">
-          {t('chat.addChannelModal.header')}
+          {t('chat.renameChannelModal.header')}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -65,24 +72,19 @@ const AddChannelModal = ({ modalProps: { channels }, onHide, modalShow }) => {
           <fieldset disabled={formik.isSubmitting}>
             <Form.Control
               className="modal-input mb-2"
-              placeholder={t('chat.addChannelModal.inputPlaceholder')}
+              placeholder={t('chat.renameChannelModal.inputPlaceholder')}
               autoFocus
-              id="name"
               required
+              id="name"
               onChange={formik.handleChange}
               value={formik.values.name}
               isInvalid={!!formik.errors.name}
+              ref={inputEl}
             />
             <Form.Label className="visually-hidden" htmlFor="name">Имя канала</Form.Label>
             <Form.Control.Feedback type="invalid" className="ps-1">{t(`chat.modalErrors.${formik.errors.name}`)}</Form.Control.Feedback>
             <div className="d-flex justify-content-end mt-3">
-              <Button
-                className="me-2"
-                onClick={onHide}
-                variant="dark"
-              >
-                {t('chat.modalButtons.cancel')}
-              </Button>
+              <Button className="me-2" onClick={onHide} variant="dark">{t('chat.modalButtons.cancel')}</Button>
               <Button type="submit" variant="dark">
                 {formik.isSubmitting
                   ? (
@@ -100,4 +102,4 @@ const AddChannelModal = ({ modalProps: { channels }, onHide, modalShow }) => {
   );
 };
 
-export default AddChannelModal;
+export default RenameChannelModal;

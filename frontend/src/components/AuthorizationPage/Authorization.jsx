@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
 import routes from '../../routes';
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../contextComponents/AuthProvider';
 
 const Login = () => {
   const [processError, setProcessError] = useState('');

@@ -12,7 +12,7 @@ import resources from './locales/index.js';
 import App from './components/App.jsx';
 import { addChannel, deleteChannel, updateChannel } from './slices/channelsSlice.js';
 import { addMessage } from './slices/messagesSlice.js';
-import AuthProvider from './hoc/AuthProvider.jsx';
+import AuthProvider from './contextComponents/AuthProvider.jsx';
 import { SocketIoContext } from './hooks/useSocketIo.js';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
@@ -43,7 +43,7 @@ const runApp = async () => {
     store.dispatch(addMessage(message));
   });
 
-  const emitNewMessage = (message, resolveCb, rejectCb) => {
+  const addNewMessage = (message, resolveCb, rejectCb) => {
     socket.timeout(5000).emit('newMessage', message, (err) => {
       if (err) {
         rejectCb();
@@ -53,7 +53,7 @@ const runApp = async () => {
     });
   };
 
-  const emitAddChannel = (channelName, resolveCb, rejectCb) => {
+  const addNewChannel = (channelName, resolveCb, rejectCb) => {
     socket.timeout(5000).emit('newChannel', channelName, (err) => {
       if (err) {
         rejectCb();
@@ -63,7 +63,7 @@ const runApp = async () => {
     });
   };
 
-  const emitDeleteChannel = (channelId, resolveCb, rejectCb) => {
+  const deleteExistingChannel = (channelId, resolveCb, rejectCb) => {
     socket.timeout(5000).emit('removeChannel', channelId, (err) => {
       if (err) {
         rejectCb();
@@ -73,7 +73,7 @@ const runApp = async () => {
     });
   };
 
-  const emitRenameChannel = (channel, resolveCb, rejectCb) => {
+  const renameChannel = (channel, resolveCb, rejectCb) => {
     socket.timeout(5000).emit('renameChannel', channel, (err) => {
       if (err) {
         rejectCb();
@@ -94,10 +94,10 @@ const runApp = async () => {
   root.render(
     <BrowserRouter>
       <SocketIoContext.Provider value={{
-        emitNewMessage,
-        emitAddChannel,
-        emitDeleteChannel,
-        emitRenameChannel,
+        addNewMessage,
+        addNewChannel,
+        deleteExistingChannel,
+        renameChannel,
       }}
       >
         <StoreProvider store={store}>

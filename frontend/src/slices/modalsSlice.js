@@ -16,6 +16,8 @@ const modalsSlice = createSlice({
     },
     hideModal(state) {
       state.modalShow = false;
+    },
+    resetModal(state) {
       state.currentModal = null;
       state.modalProps = {};
     },
@@ -23,5 +25,5 @@ const modalsSlice = createSlice({
 });
 
 export const selectModalsState = (state) => state.modals;
-export const { setCurrentModal, hideModal } = modalsSlice.actions;
+export const { setCurrentModal, hideModal, resetModal } = modalsSlice.actions;
 export default modalsSlice.reducer;

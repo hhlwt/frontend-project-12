@@ -8,8 +8,8 @@ import Chat from './HomePage/Chat.jsx';
 import Login from './AuthorizationPage/Authorization.jsx';
 import Signup from './SignUpPage/Signup.jsx';
 import Notfoundpage from './NotFoundPage/Notfoundpage.jsx';
-import RequireAuth from '../hoc/RequireAuth.jsx';
-import RequireUnAuth from '../hoc/RequireUnAuth.jsx';
+import RequireAuth from '../contextComponents/RequireAuth.jsx';
+import RequireUnAuth from '../contextComponents/RequireUnAuth.jsx';
 
 const App = () => (
   <Routes>

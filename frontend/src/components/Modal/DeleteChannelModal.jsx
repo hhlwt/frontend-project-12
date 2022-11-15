@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { useSocketIo } from '../../../hooks/useSocketIo';
+import { useSocketIo } from '../../hooks/useSocketIo';
 
 const DeleteChannelModal = ({ modalProps: { id }, onHide, modalShow }) => {
   const { t } = useTranslation();
   const [processState, setProcessState] = useState('idle');
-  const { emitDeleteChannel } = useSocketIo();
+  const { deleteExistingChannel } = useSocketIo();
 
-  const handleSuccessEmit = () => {
+  const handleSuccessSubmit = () => {
     onHide();
     setProcessState('idle');
     toast(t('toastify.deleteChannelFulfilled'), {
@@ -17,7 +17,7 @@ const DeleteChannelModal = ({ modalProps: { id }, onHide, modalShow }) => {
     });
   };
 
-  const handleFailedEmit = () => {
+  const handleFailedSubmit = () => {
     setProcessState('idle');
     toast(t('toastify.networkErr'), {
       progressClassName: 'danger-progress-bar',
@@ -28,7 +28,7 @@ const DeleteChannelModal = ({ modalProps: { id }, onHide, modalShow }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setProcessState('processing');
-    emitDeleteChannel({ id }, handleSuccessEmit, handleFailedEmit);
+    deleteExistingChannel({ id }, handleSuccessSubmit, handleFailedSubmit);
   };
 
   return (

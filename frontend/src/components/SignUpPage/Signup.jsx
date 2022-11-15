@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import * as Yup from 'yup';
 import { useRollbar } from '@rollbar/react';
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../contextComponents/AuthProvider';
 import routes from '../../routes';
 
 const Signup = () => {

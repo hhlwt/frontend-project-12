@@ -4,14 +4,14 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useSocketIo } from '../../../hooks/useSocketIo';
-import useAuth from '../../../hooks/useAuth';
+import { useAuth } from '../../../contextComponents/AuthProvider';
 import { selectActiveChannel } from '../../../slices/channelsSlice';
 
 const ChatForm = () => {
   const filter = require('leo-profanity');
   filter.add(filter.getDictionary('ru'));
   const { t } = useTranslation();
-  const { emitNewMessage } = useSocketIo();
+  const { addNewMessage } = useSocketIo();
   const { userData: { username } } = useAuth();
   const [chatFormState, setChatFormState] = useState('idle');
   const [chatFormValue, setChatFormValue] = useState('');
@@ -22,12 +22,12 @@ const ChatForm = () => {
     inputEl.current.focus();
   });
 
-  const handleSuccessEmit = () => {
+  const handleSuccessSubmit = () => {
     setChatFormValue('');
     setChatFormState('idle');
   };
 
-  const handleFailedEmit = () => {
+  const handleFailedSubmit = () => {
     toast(t('toastify.networkErr'), {
       progressClassName: 'danger-progress-bar',
     });
@@ -37,10 +37,10 @@ const ChatForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setChatFormState('processing');
-    emitNewMessage(
+    addNewMessage(
       { body: filter.clean(chatFormValue), channelId, username },
-      handleSuccessEmit,
-      handleFailedEmit,
+      handleSuccessSubmit,
+      handleFailedSubmit,
     );
   };
 

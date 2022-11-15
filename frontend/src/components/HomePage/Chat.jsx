@@ -2,7 +2,7 @@ import React from 'react';
 import Channels from './components/Channels';
 import Messages from './components/Messages';
 import ChatForm from './components/ChatForm';
-import RenderModal from './Modal/RenderModal';
+import RenderModal from '../Modal/RenderModal';
 
 const Chat = () => (
   <div className="container h-100 my-4 overflow-hidden rounded shadow">

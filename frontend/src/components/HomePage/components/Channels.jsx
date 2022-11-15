@@ -8,7 +8,7 @@ import {
 import AddChannelButton from './AddChannelButton';
 import DeleteChannelButton from './DeleteChannelButton';
 import RenameChannelButton from './RenameChannelButton';
-import useAuth from '../../../hooks/useAuth';
+import { useAuth } from '../../../contextComponents/AuthProvider';
 
 const Channels = () => {
   const { userData } = useAuth();

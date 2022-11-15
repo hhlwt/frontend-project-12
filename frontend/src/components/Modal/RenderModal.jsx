@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import AddChannelModal from './AddChannelModal';
 import DeleteChannelModal from './DeleteChannelModal';
 import RenameChannelModal from './RenameChannelModal';
-import { selectModalsState, hideModal } from '../../../slices/modalsSlice';
+import { selectModalsState, hideModal, resetModal } from '../../slices/modalsSlice';
 
 const modals = {
   adding: AddChannelModal,
@@ -18,6 +18,9 @@ const RenderModal = () => {
 
   const onHide = () => {
     dispatch(hideModal());
+    setTimeout(() => {
+      dispatch(resetModal());
+    }, 100);
   };
 
   return currentModal
