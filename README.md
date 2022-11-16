@@ -10,7 +10,7 @@
 </ul>
 <hr>
 <h2>Demo:</h2>
-:speech_balloon:<a href="https://frontend-project-12-production-a53d.up.railway.app/">React Chat App</a>
+:speech_balloon:<a href="https://reactchatapp.up.railway.app">React Chat App</a>
 <hr>
 <h2>App features:</h2>
 <ul>
