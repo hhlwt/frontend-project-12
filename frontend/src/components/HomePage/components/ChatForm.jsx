@@ -3,13 +3,12 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import filter from 'leo-profanity';
 import { useSocketIo } from '../../../hooks/useSocketIo';
 import { useAuth } from '../../../contextComponents/AuthProvider';
 import { selectActiveChannel } from '../../../slices/channelsSlice';
 
 const ChatForm = () => {
-  const filter = require('leo-profanity');
-  filter.add(filter.getDictionary('ru'));
   const { t } = useTranslation();
   const { addNewMessage } = useSocketIo();
   const { userData: { username } } = useAuth();

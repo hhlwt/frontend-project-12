@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider as StoreProvider } from 'react-redux';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 import io from 'socket.io-client';
+import filter from 'leo-profanity';
 import { store } from './slices/index.js';
 import resources from './locales/index.js';
 import App from './components/App.jsx';
@@ -25,6 +26,7 @@ const rollbarConfig = {
 
 const runApp = async () => {
   const i18n = i18next.createInstance();
+  filter.add(filter.getDictionary('ru'));
   const socket = io.connect();
 
   socket.on('newChannel', (channel) => {
