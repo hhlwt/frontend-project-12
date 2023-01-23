@@ -12,7 +12,7 @@ const Layout = () => {
     <div className="d-flex flex-column h-100">
       <header>
         <div className="container d-flex justify-content-between">
-          <Link to="/" className="chat-link">Hexlet chat</Link>
+          <Link to="/" className="chat-link">React chat</Link>
           <div>
             <Button
               variant="secondary-outline"
