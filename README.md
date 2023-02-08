@@ -4,7 +4,7 @@
 <h2>Installation & Usage:</h2>
 <b>To run locally on your machine (make sure that you have node.js and npm installed)</b>
 <ul>
-  <li>git clone git@github.com:hhlwt/frontend-project-12.git</li>
+  <li>git clone git@github.com:hhlwt/reactChatApp.git</li>
   <li>make install</li>
   <li>make start</li>
 </ul>
