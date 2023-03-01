@@ -1,5 +1,5 @@
 <h1>React Chat App</h1>
-<p>A simplified version of Slack chat</p>
+<p>A simplified version of Slack chat.</p>
 <hr>
 <h2>Installation & Usage:</h2>
 <b>To run locally on your machine (make sure that you have node.js and npm installed)</b>
